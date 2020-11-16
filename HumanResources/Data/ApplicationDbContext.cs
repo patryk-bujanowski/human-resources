@@ -17,5 +17,7 @@ namespace HumanResources.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Employee> Employees { get; set; }
     }
 }
