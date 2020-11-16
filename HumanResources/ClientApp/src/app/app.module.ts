@@ -23,7 +23,8 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'employee', loadChildren: () => import('src/app/employee/employee.module').then(m => m.EmployeeModule), canActivate: [AuthorizeGuard] }
     ])
   ],
   providers: [

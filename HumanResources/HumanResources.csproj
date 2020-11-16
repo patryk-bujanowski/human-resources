@@ -11,6 +11,12 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <UserSecretsId>942c91bd-dee1-4e97-b37a-4acc1ddca844</UserSecretsId>
+    <Authors>Patryk Bujanowski</Authors>
+    <Company>Modernware</Company>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>pl-PL</NeutralLanguage>
+    <RepositoryUrl>https://github.com/patryk-bujanowski/human-resources</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/patryk-bujanowski/human-resources</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

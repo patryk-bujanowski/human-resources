@@ -1,4 +1,5 @@
-﻿using HumanResources.Models;
+﻿using HumanResources.Extensions;
+using HumanResources.Models;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,13 @@ namespace HumanResources.Data
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.SeedData();
         }
 
         public DbSet<Employee> Employees { get; set; }
