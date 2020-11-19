@@ -1,29 +1,24 @@
-<header class="jumbotron">
+<section class="container">
   <h3>Lista pracowników</h3>
-</header>
-<div class="row">
-  <div *ngIf="status">
-    <h6>{{ status }}</h6>
-  </div>
-</div>
-<section class="row">
-  <div class="col-md-12">
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Imię i nazwisko</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let employee of employees">
-            <td>{{ employee.firstName + ' ' + employee.lastName }}</td>
-            <td><button type="button" class="btn btn-primary">Szczegóły</button></td>
-            <td><button type="button" class="btn btn-primary">Edytuj</button></td>
-            <td><button type="button" class="btn btn-danger">Usuń</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <hr />
+  <button class="btn btn-outline-primary" (click)="redirectToCreate()">Dodaj nowego pracownika</button>
+  <div class="table-responsive card card-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Imię i nazwisko</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.firstName + ' ' + employee.lastName }}</td>
+          <td class="btn-group">
+            <button type="button" class="btn btn-primary">Szczegóły</button>
+            <button type="button" class="btn btn-primary">Edytuj</button>
+            <button type="button" class="btn btn-danger">Usuń</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>

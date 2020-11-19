@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Employee } from '../../models/employee.model';
 import { EmployeeRepositoryService } from '../../services/employee-repository.service';
 
@@ -9,11 +10,9 @@ import { EmployeeRepositoryService } from '../../services/employee-repository.se
 })
 export class EmployeeListComponent implements OnInit {
 
-  public status: string = null;
-
   public employees: Employee[] = null;
 
-  constructor(private repository: EmployeeRepositoryService) { }
+  constructor(private repository: EmployeeRepositoryService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAll();
@@ -21,7 +20,6 @@ export class EmployeeListComponent implements OnInit {
 
   public getAll = () => {
     try {
-      this.status = 'Proszę czekać...';
       this.repository.getAll()
         .subscribe(result => {
           this.employees = result as Employee[];
@@ -30,9 +28,10 @@ export class EmployeeListComponent implements OnInit {
         });
     } catch (e) {
       console.error(e);
-    } finally {
-      this.status = null;
     }
   }
 
+  public redirectToCreate = () => {
+    this.router.navigate(['/employee/create']);
+  }
 }

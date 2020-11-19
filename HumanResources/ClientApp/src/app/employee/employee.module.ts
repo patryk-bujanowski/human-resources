@@ -4,6 +4,7 @@ import { EmployeeCreateComponent } from './components/employee-create/employee-c
 import { EmployeeRepositoryService } from './services/employee-repository.service';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
   exports: [

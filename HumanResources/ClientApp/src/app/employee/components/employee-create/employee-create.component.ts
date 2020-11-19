@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormComponentBase } from '../../../shared/components/form-component-base';
@@ -14,7 +15,7 @@ export class EmployeeCreateComponent extends FormComponentBase implements OnInit
 
   public employeeForm: FormGroup;
 
-  constructor(private repository: EmployeeRepositoryService, private router: Router) {
+  constructor(private repository: EmployeeRepositoryService, private router: Router, private location: Location) {
     super();
   }
 
@@ -42,6 +43,10 @@ export class EmployeeCreateComponent extends FormComponentBase implements OnInit
 
   public redirectToList = () => {
     this.router.navigate(['/employee/list']);
+  }
+
+  public redirectBack = () => {
+    this.location.back();
   }
 
 }
