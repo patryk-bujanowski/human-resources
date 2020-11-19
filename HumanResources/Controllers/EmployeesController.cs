@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HumanResources.Data;
 using HumanResources.Models;
+using HumanResources.Repositories;
 
 namespace HumanResources.Controllers
 {
@@ -14,25 +15,25 @@ namespace HumanResources.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepositoryWrapper repository;
 
-        public EmployeesController(ApplicationDbContext context)
+        public EmployeesController(IRepositoryWrapper repository)
         {
-            _context = context;
+            this.repository = repository;
         }
 
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return await repository.Employee.FindAll().ToListAsync();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await repository.Employee.FindById(id).FirstOrDefaultAsync();
 
             if (employee == null)
             {
@@ -52,15 +53,15 @@ namespace HumanResources.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(employee).State = EntityState.Modified;
+            repository.Employee.Update(employee);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await repository.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EmployeeExists(id))
+                if (!repository.Employee.CheckIfExists(id))
                 {
                     return NotFound();
                 }
@@ -78,31 +79,26 @@ namespace HumanResources.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
+            repository.Employee.Create(employee);
+            await repository.SaveAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
+            return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
         }
 
         // DELETE: api/Employees/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await repository.Employee.FindById(id).FirstOrDefaultAsync();
             if (employee == null)
             {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            repository.Employee.Delete(employee);
+            await repository.SaveAsync();
 
             return NoContent();
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }

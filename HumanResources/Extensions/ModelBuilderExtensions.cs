@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HumanResources.Extensions
 {
-    public static class ModelBuilderExtension
+    public static class ModelBuilderExtensions
     {
         public static void SeedData(this ModelBuilder builder)
         {
