@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HumanResources.Extensions;
+using Newtonsoft.Json;
 
 namespace HumanResources
 {
@@ -31,6 +32,8 @@ namespace HumanResources
 
             services.ConfigureScoped();
 
+            services.ConfigureTransient();
+
             services.ConfigureRepositoryWrapper();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -39,7 +42,12 @@ namespace HumanResources
 
             services.ConfigureAuthentication();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+    
             services.AddRazorPages();
 
             services.ConfigureSpa();

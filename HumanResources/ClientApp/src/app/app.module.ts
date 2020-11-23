@@ -10,12 +10,14 @@ import { HomeComponent } from './home/home.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { SearchMenuComponent } from './search-menu/search-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent
+    HomeComponent,
+    SearchMenuComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -23,8 +25,9 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'employee', loadChildren: () => import('src/app/employee/employee.module').then(m => m.EmployeeModule), canActivate: [AuthorizeGuard] }
+      { path: '', component: HomeComponent },
+      { path: 'employee', loadChildren: () => import('src/app/employee/employee.module').then(m => m.EmployeeModule), canActivate: [AuthorizeGuard] },
+      { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizeGuard] }
     ])
   ],
   providers: [

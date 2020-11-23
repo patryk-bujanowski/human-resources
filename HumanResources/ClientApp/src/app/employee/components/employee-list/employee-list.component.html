@@ -7,14 +7,16 @@
       <thead>
         <tr>
           <th>Imię i nazwisko</th>
+          <th>Stanowisko</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let employee of employees">
           <td>{{ employee.firstName + ' ' + employee.lastName }}</td>
+          <td>{{ employee.position.name }}</td>
           <td class="btn-group">
-            <button type="button" class="btn btn-primary">Szczegóły</button>
-            <button type="button" class="btn btn-primary">Edytuj</button>
+            <button type="button" class="btn btn-primary" (click)="redirectToDetails(employee.id)" >Szczegóły</button>
+            <button type="button" class="btn btn-primary" (click)="redirectToUpdate(employee.id)">Edytuj</button>
             <button type="button" class="btn btn-danger">Usuń</button>
           </td>
         </tr>

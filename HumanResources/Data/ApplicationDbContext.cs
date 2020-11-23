@@ -23,9 +23,13 @@ namespace HumanResources.Data
         {
             base.OnModelCreating(builder);
 
-            builder.SeedData();
+            builder.Build();
         }
 
         public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<EmployeeDetails> EmployeeDetails { get; set; }
+
+        public DbSet<JobPosition> Positions { get; set; }
     }
 }

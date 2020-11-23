@@ -8,7 +8,7 @@ export class ValidationService {
 
   constructor() { }
 
-  public matchPassword = (password: string, confirmPassword: string) => {
+  public matchPassword(password: string, confirmPassword: string): any {
     return (form: FormGroup) => {
       const passwordControl = form.controls[password];
       const confirmPasswordControl = form.controls[confirmPassword];

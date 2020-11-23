@@ -2,6 +2,7 @@
 using HumanResources.Models;
 using HumanResources.Repositories;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,11 @@ namespace HumanResources.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
@@ -51,6 +56,11 @@ namespace HumanResources.Extensions
         }
 
         public static void ConfigureScoped(this IServiceCollection services)
+        {
+
+        }
+
+        public static void ConfigureTransient(this IServiceCollection services)
         {
 
         }

@@ -8,7 +8,7 @@ namespace HumanResources.Repositories
 {
     public interface IEmployeeRepository : IRepositoryBase<Employee>
     {
-        IQueryable<Employee> FindById(int id);
+        IQueryable<Employee> FindById(int id, bool withDetails = false);
 
         bool CheckIfExists(int id);
     }

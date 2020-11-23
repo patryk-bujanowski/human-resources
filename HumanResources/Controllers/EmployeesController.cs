@@ -31,9 +31,9 @@ namespace HumanResources.Controllers
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<Employee>> GetEmployee(int id, [FromQuery] bool withDetails = false)
         {
-            var employee = await repository.Employee.FindById(id).FirstOrDefaultAsync();
+            var employee = await repository.Employee.FindById(id, withDetails).FirstOrDefaultAsync();
 
             if (employee == null)
             {

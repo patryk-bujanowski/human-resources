@@ -46,12 +46,12 @@ namespace HumanResources.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Adres email jest wymagany.")]
+            [EmailAddress(ErrorMessage = "Wprowadzony adres email jest niepoprawny.")]
             [Display(Name = "Adres email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane.")]
             [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} znaków i maksymalnie {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
@@ -79,28 +79,10 @@ namespace HumanResources.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation($"Użytkownik \"{user.UserName}\" zarejestrował się.");
+                    _logger.LogInformation($"Użytkownik \"{user.UserName}\" zarejestrował się.");                 
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój adres email",
-                        $"Proszę potwierdzić adres email poprzez <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>przejście tutaj</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {

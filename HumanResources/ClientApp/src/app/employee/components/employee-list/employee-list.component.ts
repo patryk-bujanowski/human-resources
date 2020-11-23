@@ -18,7 +18,7 @@ export class EmployeeListComponent implements OnInit {
     this.getAll();
   }
 
-  public getAll = () => {
+  public getAll(): void {
     try {
       this.repository.getAll()
         .subscribe(result => {
@@ -31,7 +31,15 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-  public redirectToCreate = () => {
+  public redirectToCreate(): void {
     this.router.navigate(['/employee/create']);
+  }
+
+  public redirectToUpdate(id: number): void {
+    this.router.navigate([`/employee/update/${id}`]);
+  }
+
+  public redirectToDetails(id: number): void {
+    this.router.navigate([`/employee/details/${id}`]);
   }
 }

@@ -17,27 +17,27 @@ namespace HumanResources.Repositories
             this.context = context;
         }
 
-        public void Create(T entity)
+        public virtual void Create(T entity)
         {
             context.Set<T>().Add(entity);
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             context.Set<T>().Remove(entity);
         }
 
-        public IQueryable<T> FindAll()
+        public virtual IQueryable<T> FindAll()
         {
             return context.Set<T>().AsNoTracking();
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return context.Set<T>().Where(expression).AsNoTracking();
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             context.Set<T>().Update(entity);
         }

@@ -1,5 +1,6 @@
 ﻿using HumanResources.Data;
 using HumanResources.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,20 @@ namespace HumanResources.Repositories
         {
         }
 
-        public IQueryable<Employee> FindById(int id)
+        public override IQueryable<Employee> FindAll()
         {
-            return FindByCondition(e => e.Id == id);
+            return base.FindAll()
+                .Include(e => e.Position);
+        }
+
+        public IQueryable<Employee> FindById(int id, bool withDetails = false)
+        {
+            var employee = FindByCondition(e => e.Id == id)
+                .Include(e => e.Position);
+            if (withDetails)
+                return employee.Include(e => e.Details);
+            return employee;
+
         }
 
         public bool CheckIfExists(int id)

@@ -9,24 +9,74 @@ namespace HumanResources.Extensions
 {
     public static class ModelBuilderExtensions
     {
-        public static void SeedData(this ModelBuilder builder)
+        public static void Build(this ModelBuilder builder)
         {
-            var employee1 = new Employee
-            {
-                Id = 1,
-                FirstName = "Anna",
-                LastName = "Nowak"
-            };
+            builder.BuildEntities();
 
-            var employee2 = new Employee
-            {
-                Id = 2,
-                FirstName = "Bartosz",
-                LastName = "Kowalski"
-            };
+            builder.SeedData();
+        }
 
-            builder.Entity<Employee>()
-                .HasData(employee1, employee2);
+        private static void BuildEntities(this ModelBuilder builder)
+        {
+            builder.BuildPosition();
+
+            builder.BuildEmployee();
+
+            builder.BuildEmployeeDetails();
+        }
+
+        private static void BuildPosition(this ModelBuilder builder)
+        {
+            builder.Entity<JobPosition>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+
+                entity.Property(p => p.Name)
+                    .IsRequired();
+            });
+        }
+
+        private static void BuildEmployee(this ModelBuilder builder)
+        {
+            builder.Entity<Employee>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired();
+
+                entity.Property(e => e.LastName)
+                    .IsRequired();
+
+                entity.Property(e => e.Sex)
+                    .IsRequired()
+                    .HasMaxLength(1);
+
+                entity.HasOne(e => e.User)
+                    .WithOne(u => u.Employee)
+                    .HasForeignKey<Employee>(e => e.UserId);
+
+                entity.HasOne(e => e.Position)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(e => e.PositionId);
+
+                entity.HasOne(e => e.Details)
+                    .WithOne(ed => ed.Employee)
+                    .HasForeignKey<Employee>(e => e.DetailsId);
+            });
+        }
+
+        private static void BuildEmployeeDetails(this ModelBuilder builder)
+        {
+            builder.Entity<EmployeeDetails>(entity =>
+            {
+                entity.HasKey(ed => ed.Id);
+            });
+        }
+
+        private static void SeedData(this ModelBuilder builder)
+        {
+
         }
     }
 }

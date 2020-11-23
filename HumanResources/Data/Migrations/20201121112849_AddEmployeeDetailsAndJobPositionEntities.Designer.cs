@@ -3,14 +3,16 @@ using System;
 using HumanResources.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HumanResources.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201121112849_AddEmployeeDetailsAndJobPositionEntities")]
+    partial class AddEmployeeDetailsAndJobPositionEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +107,6 @@ namespace HumanResources.Data.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DetailsId")
@@ -115,10 +114,27 @@ namespace HumanResources.Data.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DetailsId = 1,
+                            FirstName = "Anna",
+                            LastName = "Nowak",
+                            PositionId = 1,
+                            Sex = "F"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DetailsId = 2,
+                            FirstName = "Bartosz",
+                            LastName = "Kowalski",
+                            PositionId = 2,
+                            Sex = "M"
+                        });
                 });
 
             modelBuilder.Entity("HumanResources.Models.EmployeeDetails", b =>
@@ -142,6 +158,24 @@ namespace HumanResources.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmployeeDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Birthdate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "Gliwice",
+                            PostalCode = "44-100",
+                            StreetAddress = "ul. Jasna 1/1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Birthdate = new DateTime(1985, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "Gliwice",
+                            PostalCode = "44-100",
+                            StreetAddress = "ul. Ciemna 2/2"
+                        });
                 });
 
             modelBuilder.Entity("HumanResources.Models.JobPosition", b =>
@@ -160,6 +194,20 @@ namespace HumanResources.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Zarządzanie zasobami ludzkimi",
+                            Name = "HR Manager"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Tworzenie oprogramowania",
+                            Name = "Programista"
+                        });
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -411,15 +459,9 @@ namespace HumanResources.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HumanResources.Models.ApplicationUser", "User")
-                        .WithOne("Employee")
-                        .HasForeignKey("HumanResources.Models.Employee", "UserId");
-
                     b.Navigation("Details");
 
                     b.Navigation("Position");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -471,11 +513,6 @@ namespace HumanResources.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HumanResources.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("HumanResources.Models.EmployeeDetails", b =>
