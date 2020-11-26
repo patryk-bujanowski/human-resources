@@ -7,17 +7,19 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
-import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
-import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { ApiAuthorizationModule } from 'src/app/api-authorization/api-authorization.module';
+import { AuthorizeGuard } from 'src/app/api-authorization/authorize.guard';
+import { AuthorizeInterceptor } from 'src/app/api-authorization/authorize.interceptor';
 import { SearchMenuComponent } from './search-menu/search-menu.component';
+import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    SearchMenuComponent
+    SearchMenuComponent,
+    ProfileMenuComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /HumanResources/app.db
 /commands.txt
+/.vscode

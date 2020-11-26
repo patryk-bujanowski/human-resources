@@ -1,0 +1,10 @@
+<ul class="navbar-nav" *ngIf="profileExists && (isAuthenticated | async)">
+    <li class="nav-item">
+        <a class="nav-link text-dark" routerLink="/employee/details/{{ userId }}" title="Twój profil">Twój profil</a>
+    </li>
+</ul>
+<ul class="navbar-nav" *ngIf="!(profileExists) && (isAuthenticated | async)">
+    <li class="nav-item">
+        <a class="nav-link text-dark" routerLink="/employee/create" title="Utwórz profil">Utwórz profil</a>
+    </li>
+</ul>

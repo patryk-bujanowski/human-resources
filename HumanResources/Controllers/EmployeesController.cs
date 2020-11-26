@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HumanResources.Data;
 using HumanResources.Models;
 using HumanResources.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace HumanResources.Controllers
 {
@@ -15,90 +16,147 @@ namespace HumanResources.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+        private readonly ILogger logger;
         private readonly IRepositoryWrapper repository;
 
-        public EmployeesController(IRepositoryWrapper repository)
+        public EmployeesController(ILogger logger, IRepositoryWrapper repository)
         {
+            this.logger = logger;
             this.repository = repository;
         }
 
-        // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<IActionResult> GetEmployees()
         {
-            return await repository.Employee.FindAll().ToListAsync();
-        }
-
-        // GET: api/Employees/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id, [FromQuery] bool withDetails = false)
-        {
-            var employee = await repository.Employee.FindById(id, withDetails).FirstOrDefaultAsync();
-
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return employee;
-        }
-
-        // PUT: api/Employees/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
-        {
-            if (id != employee.Id)
-            {
-                return BadRequest();
-            }
-
-            repository.Employee.Update(employee);
-
             try
             {
-                await repository.SaveAsync();
+                var employees = await repository.Employee.FindAll().ToListAsync();
+                return Ok(employees);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!repository.Employee.CheckIfExists(id))
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEmployee(int id, [FromQuery] bool withDetails = false)
+        {
+            try
+            {
+                var employee = await repository.Employee.FindById(id, withDetails).FirstOrDefaultAsync();
+
+                if (employee == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                return Ok(employee);
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
-        // POST: api/Employees
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        [HttpGet("byuserid/{userId}")]
+        public async Task<IActionResult> GetEmployeeByUserId(string userId, [FromQuery] bool withDetails = false)
         {
-            repository.Employee.Create(employee);
-            await repository.SaveAsync();
+            try
+            {
+                var employee = await repository.Employee.FindByUserId(userId, withDetails).FirstOrDefaultAsync();
 
-            return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(employee);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
-        // DELETE: api/Employees/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        {
+            try
+            {
+                if (id != employee.Id)
+                {
+                    return BadRequest();
+                }
+
+                repository.Employee.Update(employee);
+
+                try
+                {
+                    await repository.SaveAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!repository.Employee.CheckIfExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostEmployee(Employee employee)
+        {
+            try
+            {
+                repository.Employee.Create(employee);
+                await repository.SaveAsync();
+
+                return CreatedAtAction(nameof(GetEmployee), new { id = employee.Id }, employee);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            var employee = await repository.Employee.FindById(id).FirstOrDefaultAsync();
-            if (employee == null)
+            try
             {
-                return NotFound();
+                var employee = await repository.Employee.FindById(id).FirstOrDefaultAsync();
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                repository.Employee.Delete(employee);
+                await repository.SaveAsync();
+
+                return NoContent();
             }
-
-            repository.Employee.Delete(employee);
-            await repository.SaveAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
     }
 }

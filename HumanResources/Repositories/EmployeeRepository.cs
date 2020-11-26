@@ -28,7 +28,15 @@ namespace HumanResources.Repositories
             if (withDetails)
                 return employee.Include(e => e.Details);
             return employee;
+        }
 
+        public IQueryable<Employee> FindByUserId(string userId, bool withDetails = false)
+        {
+            var employee = FindByCondition(e => e.UserId == userId)
+                .Include(e => e.Position);
+            if (withDetails)
+                return employee.Include(e => e.Details);
+            return employee;
         }
 
         public bool CheckIfExists(int id)

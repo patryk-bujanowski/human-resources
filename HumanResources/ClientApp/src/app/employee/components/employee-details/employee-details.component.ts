@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthorizeService, IUser } from '../../../../api-authorization/authorize.service';
+import { AuthorizeService, IUser } from '../../../api-authorization/authorize.service';
 import { Employee } from '../../models/employee.model';
 import { EmployeeRepositoryService } from '../../services/employee-repository.service';
 

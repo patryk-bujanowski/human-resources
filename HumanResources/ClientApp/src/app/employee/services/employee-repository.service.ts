@@ -24,6 +24,13 @@ export class EmployeeRepositoryService {
     return this.repository.getById(this.url, id);
   }
 
+  public getByUserId(userId: string, withDetails: boolean = false): Observable<object> {
+    if (withDetails) {
+      return this.repository.getByIdWithDetails(this.url + '/byuserid', userId);
+    }
+    return this.repository.getById(this.url, userId);
+  }
+
   public create(employee: Employee): Observable<object> {
     return this.repository.create(this.url, employee);
   }
