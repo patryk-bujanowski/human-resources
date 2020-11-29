@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HumanResources.Extensions;
 using Newtonsoft.Json;
+using AutoMapper;
 
 namespace HumanResources
 {
@@ -28,6 +29,10 @@ namespace HumanResources
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.ConfigureDbContext(Configuration);
 
             services.ConfigureScoped();
@@ -42,13 +47,8 @@ namespace HumanResources
 
             services.ConfigureAuthentication();
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                {
-                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                });
-    
-            services.AddRazorPages();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.ConfigureSpa();
         }
@@ -61,6 +61,13 @@ namespace HumanResources
                 var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 context.Database.Migrate();
             }
+
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+                options.AllowAnyHeader();
+            });
 
             if (env.IsDevelopment())
             {
@@ -83,15 +90,8 @@ namespace HumanResources
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseIdentityServer();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.UseSpa(spa =>
             {

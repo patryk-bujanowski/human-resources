@@ -1,0 +1,22 @@
+<section class="container">
+    <form [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
+        <h3>Zaloguj się</h3>
+        <hr />
+        <div class="form-horizontal card card-body bg-light mb-2 mt-2">
+            <div class="form-group row">
+                <label for="email" class="control-label">Adres email</label>
+                <input type="email" formControlName="email" id="email" class="form-control" />
+                <small *ngIf="validateControl(loginForm, 'email') && hasError(loginForm, 'email', 'required')">Adres email jest wymagany.</small>
+            </div>
+            <div class="form-group row">
+                <label for="password" class="control-label">Hasło</label>
+                <input type="password" formControlName="password" id="password" class="form-control" />
+                <small *ngIf="validateControl(loginForm, 'password') && hasError(loginForm, 'password', 'required')">Hasło jest wymagane.</small>
+            </div>
+            <div class="form-group row">
+                <button class="btn btn-primary" type="submit">Zaloguj się</button>
+                <button class="btn btn-danger" type="button" (click)="redirectBack()">Wróć</button>
+            </div>
+        </div>
+    </form>
+</section>

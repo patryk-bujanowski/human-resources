@@ -7,11 +7,12 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { ApiAuthorizationModule } from 'src/app/api-authorization/api-authorization.module';
-import { AuthorizeGuard } from 'src/app/api-authorization/authorize.guard';
-import { AuthorizeInterceptor } from 'src/app/api-authorization/authorize.interceptor';
 import { SearchMenuComponent } from './search-menu/search-menu.component';
-import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
+import { SharedModule } from './shared/shared.module';
+import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
+import { AuthorizationGuard } from './shared/authorization/authorization.guard';
+import { AccountMenuComponent } from './account-menu/account-menu.component';
+import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -19,21 +20,23 @@ import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
     NavMenuComponent,
     HomeComponent,
     SearchMenuComponent,
-    ProfileMenuComponent
+    AccountMenuComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    ApiAuthorizationModule,
+    SharedModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent },
-      { path: 'employee', loadChildren: () => import('src/app/employee/employee.module').then(m => m.EmployeeModule), canActivate: [AuthorizeGuard] },
-      { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizeGuard] }
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
+      { path: 'home', component: HomeComponent, canActivate: [AuthorizationGuard] },
+      { path: 'account', loadChildren: () => import('src/app/account/account.module').then(m => m.AccountModule) },
+      { path: 'user', loadChildren: () => import('src/app/user/user.module').then(m => m.UserModule), canActivate: [AuthorizationGuard] },
+      { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizationGuard] }
     ])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

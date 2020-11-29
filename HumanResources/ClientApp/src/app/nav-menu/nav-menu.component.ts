@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthorizeService } from '../api-authorization/authorize.service';
+import { AuthorizationService } from '../shared/authorization/authorization.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,7 +9,7 @@ import { AuthorizeService } from '../api-authorization/authorize.service';
 export class NavMenuComponent {
   isExpanded = false;
 
-  constructor(private authorize: AuthorizeService) {}
+  constructor(private authorization: AuthorizationService) {}
 
   collapse() {
     this.isExpanded = false;

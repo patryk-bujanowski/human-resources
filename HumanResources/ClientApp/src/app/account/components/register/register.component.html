@@ -1,0 +1,30 @@
+<section class="container">
+    <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
+      <h3>Zarejestruj się</h3>
+      <hr />
+      <div class="form-horizontal card card-body bg-light mb-2 mt-2">
+        <h5>Dane logowania</h5>
+        <hr />
+        <div class="form-group row">
+          <label for="email" class="control-label">Adres email</label>
+          <input type="email" formControlName="email" id="email" class="form-control" />
+          <small *ngIf="validateControl(registerForm, 'email') && hasError(registerForm, 'email', 'required')">Adres email jest wymagany.</small>
+        </div>
+        <div class="form-group row">
+            <label for="password" class="control-label">Hasło</label>
+            <input type="password" formControlName="password" id="password" class="form-control" />
+            <small *ngIf="validateControl(registerForm, 'password') && hasError(registerForm, 'password', 'required')">Hasło jest wymagane.</small>
+        </div>
+        <div class="form-group row">
+            <label for="confirmPassword" class="control-label">Potwierdź hasło</label>
+            <input type="password" formControlName="confirmPassword" id="confirmPassword" class="form-control" />
+            <small *ngIf="validateControl(registerForm, 'confirmPassword') && hasError(registerForm, 'confirmPassword', 'required')">Hasło jest wymagane.</small>
+        </div>
+      </div>
+      <div class="form-group">
+          <button class="btn btn-primary" type="submit">Zarejestruj</button>
+          <button class="btn btn-danger" type="button" (click)="redirectBack()">Wróć</button>
+      </div>
+    </form>
+  </section>
+  

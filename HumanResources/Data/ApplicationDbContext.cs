@@ -1,7 +1,6 @@
 ﻿using HumanResources.Extensions;
 using HumanResources.Models;
-using IdentityServer4.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,11 +10,10 @@ using System.Threading.Tasks;
 
 namespace HumanResources.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+        public ApplicationDbContext(DbContextOptions options) 
+            : base(options)
         {
         }
 
@@ -26,10 +24,6 @@ namespace HumanResources.Data
             builder.Build();
         }
 
-        public DbSet<Employee> Employees { get; set; }
-
-        public DbSet<EmployeeDetails> EmployeeDetails { get; set; }
-
-        public DbSet<JobPosition> Positions { get; set; }
+        public DbSet<UserDetails> UserDetails { get; set; }
     }
 }

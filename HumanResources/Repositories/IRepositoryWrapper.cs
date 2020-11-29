@@ -7,7 +7,7 @@ namespace HumanResources.Repositories
 {
     public interface IRepositoryWrapper
     {
-        IEmployeeRepository Employee { get; }
+        IUserRepository Users { get; }
 
         void Save();
 

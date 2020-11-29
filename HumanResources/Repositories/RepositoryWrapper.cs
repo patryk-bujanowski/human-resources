@@ -9,9 +9,9 @@ namespace HumanResources.Repositories
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private readonly ApplicationDbContext context;
-        private IEmployeeRepository employee;
+        private IUserRepository users;
 
-        public IEmployeeRepository Employee => employee ??= new EmployeeRepository(context);
+        public IUserRepository Users => users ??= new UserRepository(context);
 
         public RepositoryWrapper(ApplicationDbContext context)
         {

@@ -18,57 +18,29 @@ namespace HumanResources.Extensions
 
         private static void BuildEntities(this ModelBuilder builder)
         {
-            builder.BuildPosition();
+            builder.BuildUser();
 
-            builder.BuildEmployee();
-
-            builder.BuildEmployeeDetails();
+            builder.BuildUserDetails();
         }
 
-        private static void BuildPosition(this ModelBuilder builder)
+        private static void BuildUser(this ModelBuilder builder)
         {
-            builder.Entity<JobPosition>(entity =>
-            {
-                entity.HasKey(p => p.Id);
-
-                entity.Property(p => p.Name)
-                    .IsRequired();
-            });
-        }
-
-        private static void BuildEmployee(this ModelBuilder builder)
-        {
-            builder.Entity<Employee>(entity =>
+            builder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired();
-
-                entity.Property(e => e.LastName)
-                    .IsRequired();
-
                 entity.Property(e => e.Sex)
-                    .IsRequired()
                     .HasMaxLength(1);
 
-                entity.HasOne(e => e.User)
-                    .WithOne(u => u.Employee)
-                    .HasForeignKey<Employee>(e => e.UserId);
-
-                entity.HasOne(e => e.Position)
-                    .WithMany(p => p.Employees)
-                    .HasForeignKey(e => e.PositionId);
-
                 entity.HasOne(e => e.Details)
-                    .WithOne(ed => ed.Employee)
-                    .HasForeignKey<Employee>(e => e.DetailsId);
+                    .WithOne(ed => ed.User)
+                    .HasForeignKey<User>(e => e.DetailsId);
             });
         }
 
-        private static void BuildEmployeeDetails(this ModelBuilder builder)
+        private static void BuildUserDetails(this ModelBuilder builder)
         {
-            builder.Entity<EmployeeDetails>(entity =>
+            builder.Entity<UserDetails>(entity =>
             {
                 entity.HasKey(ed => ed.Id);
             });
