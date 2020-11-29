@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -12,7 +12,6 @@ import { SharedModule } from './shared/shared.module';
 import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
 import { AuthorizationGuard } from './shared/authorization/authorization.guard';
 import { AccountMenuComponent } from './account-menu/account-menu.component';
-import { AccountModule } from './account/account.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +25,7 @@ import { AccountModule } from './account/account.module';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     RouterModule.forRoot([
       { path: '', pathMatch: 'full', redirectTo: 'home' },

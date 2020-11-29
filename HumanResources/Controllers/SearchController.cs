@@ -27,11 +27,15 @@ namespace HumanResources.Controllers
         {
             try
             {
-                var employees = await repository.Users.FindByCondition(e => 
-                    e.FirstName.Contains(query, StringComparison.OrdinalIgnoreCase) || 
-                    e.LastName.Contains(query, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+                var users = repository.Users.FindByCondition(e =>
+                    e.Email.Contains(query) ||
+                    e.FirstName.Contains(query) ||
+                    e.LastName.Contains(query));
 
-                return Ok(employees);
+                if (users.Any())
+                    return Ok(await users.ToListAsync());
+
+                return Ok();
             }
             catch (Exception ex)
             {

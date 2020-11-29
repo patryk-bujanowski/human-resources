@@ -1,4 +1,5 @@
-<form class="form-inline">
-  <input class="form-control" type="search" placeholder="Szukaj" aria-label="Szukaj">
-  <button class="btn btn-outline-primary" type="submit">Szukaj</button>
+<form [formGroup]="searchForm" class="form-inline" *ngIf="isAuthenticated | async" (ngSubmit)="search(searchForm.value)">
+  <input formControlName="query" id="query" name="query" role="searchbox" class="form-control" type="search" 
+    placeholder="Szukaj" aria-label="Szukaj">
+  <button class="btn btn-outline-primary" type="submit" [disabled]="searchForm.invalid" >Szukaj</button>
 </form>
