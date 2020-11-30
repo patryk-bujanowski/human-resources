@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { UserAuthentication } from '../models/user-authentication.model';
+import { UserAuthentication } from '../../user/models/user-authentication.model';
 import { environment } from '../../../environments/environment.prod';
-import { User } from '../models/user.model';
+import { User } from '../../user/models/user.model';
 import { Observable, pipe, Subscription } from 'rxjs';
+import { UserRegistration } from 'src/app/user/models/user-registration.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,12 @@ import { Observable, pipe, Subscription } from 'rxjs';
 export class AuthorizationService {
 
   public readonly accessTokenKey = 'access_token';
-
-  public currentUser: User;
+  public readonly currentUserKey = 'current_user';
 
   constructor(private http: HttpClient,
     public router: Router) { }
 
-  public register(user: UserAuthentication): Observable<User> {
+  public register(user: UserRegistration): Observable<User> {
     const url = environment.apiUrl + '/api/account/register';
     return this.http.post<User>(url, user);
   }
@@ -34,6 +34,15 @@ export class AuthorizationService {
 
   public get token(): string {
     return localStorage.getItem(this.accessTokenKey);
+  }
+
+  public get currentUser(): User {
+    const user = localStorage.getItem(this.currentUserKey);
+    if (user !== null) {
+      return JSON.parse(user);
+    } else {
+      return null;
+    }
   }
 
   public get isLoggedIn(): boolean {

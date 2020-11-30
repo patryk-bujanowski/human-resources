@@ -9,6 +9,10 @@ import { AuthorizationService } from '../shared/authorization/authorization.serv
 })
 export class AccountMenuComponent implements OnInit {
 
+  public get userProfile(): Observable<string> {
+    return of(this.authorization.currentUser.firstName + ' ' + this.authorization.currentUser.lastName);
+  }
+
   public get isAuthenticated(): Observable<boolean> {
     return of(this.authorization.isLoggedIn);
   }

@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormComponentBase } from 'src/app/shared/components/form-component-base';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../../shared/authorization/authorization.service';
-import { User } from '../../../shared/models/user.model';
-import { UserAuthentication } from '../../../shared/models/user-authentication.model';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserRegistration } from 'src/app/user/models/user-registration.model';
 
 @Component({
   selector: 'app-register',
@@ -27,14 +26,20 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
     this.registerForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required])
-    })
+      confirmPassword: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      sex: new FormControl('', [Validators.required])
+    });
   }
 
   public registerUser(registerFormValue: any): void {
-    const user: UserAuthentication = {
+    const user: UserRegistration = {
       email: registerFormValue.email,
-      password: registerFormValue.password
+      password: registerFormValue.password,
+      firstName: registerFormValue.firstName,
+      lastName: registerFormValue.lastName,
+      sex: registerFormValue.sex
     };
 
     this.authorization.register(user)

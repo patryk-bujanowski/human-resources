@@ -31,7 +31,7 @@ export class SearchMenuComponent extends FormComponentBase implements OnInit {
 
   public search(searchFormValue: any): void {
     const query = searchFormValue.query;
-    this.router.navigate([`/search/results/${query}`]);
+    this.router.navigate([`/search/results/${btoa(query)}`]);
   }
 
 }

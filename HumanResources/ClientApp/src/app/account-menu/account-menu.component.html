@@ -1,6 +1,6 @@
 <ul class="navbar-nav" *ngIf="isAuthenticated | async">
     <li class="nav-item">
-        <a class="nav-link text-dark" routerLink="/user" title="Twój profil">Twój profil</a>
+        <a class="nav-link text-dark" routerLink="/user" title="Twój profil">{{ userProfile | async }}</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" routerLink="/account/logout" [state]='{ local: true }' title="Wyloguj się">Wyloguj się</a>

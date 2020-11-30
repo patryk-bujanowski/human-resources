@@ -20,5 +20,7 @@ namespace HumanResources.Models
         public string City { get; set; }
 
         public string PostalCode { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

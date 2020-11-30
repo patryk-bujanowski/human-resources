@@ -1,1 +1,12 @@
-<p>user-profile works!</p>
+<section class="container">
+    <section class="card">
+        <div class="card-body">
+            <h5 class="jumbotron card-title">{{ user.firstName + ' ' + user.lastName }}</h5>
+            <div class="card-text">
+                <p>Adres email: <b>{{ user.email }}</b></p>
+                <p>Numer telefonu: <b>{{ user.details.phoneNumber }}</b></p>
+                <a routerLink="/user/edit" class="btn btn-primary">Edytuj profil</a>
+            </div>
+        </div>
+    </section>
+</section>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RepositoryService } from './services/repository.service';
 import { ValidationService } from './services/validation.service';
+import { AuthorizationService } from './authorization/authorization.service';
 
 @NgModule({
   declarations: [],
@@ -10,7 +11,8 @@ import { ValidationService } from './services/validation.service';
   ],
   providers: [
     RepositoryService,
-    ValidationService
+    ValidationService,
+    AuthorizationService
   ]
 })
 export class SharedModule { }

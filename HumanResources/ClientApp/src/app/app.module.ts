@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
 import { AuthorizationGuard } from './shared/authorization/authorization.guard';
 import { AccountMenuComponent } from './account-menu/account-menu.component';
+import { AuthorizationService } from './shared/authorization/authorization.service';
 
 @NgModule({
   declarations: [

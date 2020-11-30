@@ -29,6 +29,12 @@ namespace HumanResources.Extensions
             {
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.FirstName)
+                    .IsRequired();
+
+                entity.Property(e => e.LastName)
+                    .IsRequired();
+
                 entity.Property(e => e.Sex)
                     .HasMaxLength(1);
 

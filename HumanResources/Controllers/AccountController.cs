@@ -37,16 +37,23 @@ namespace HumanResources.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserAuthenticationDto userAuthentication)
+        public async Task<IActionResult> Register(UserRegistrationDto userRegistration)
         {
             try
             {
-                var user = new User { UserName = userAuthentication.Email, Email = userAuthentication.Email };
-                var result = await userManager.CreateAsync(user, userAuthentication.Password);
+                var user = new User 
+                { 
+                    UserName = userRegistration.Email, 
+                    Email = userRegistration.Email,
+                    FirstName = userRegistration.FirstName,
+                    LastName = userRegistration.LastName,
+                    Sex = userRegistration.Sex 
+                };
+                var result = await userManager.CreateAsync(user, userRegistration.Password);
                 if (result.Succeeded)
                 {
                     logger.LogInformation($"Użytkownik \"{user.UserName}\" zarejestrował się.");
-                    var registeredUser = await userManager.FindByEmailAsync(userAuthentication.Email);
+                    var registeredUser = await userManager.FindByEmailAsync(userRegistration.Email);
 
                     return Ok(mapper.Map<UserDto>(registeredUser));
                 }

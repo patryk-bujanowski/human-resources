@@ -21,6 +21,33 @@
             <small *ngIf="validateControl(registerForm, 'confirmPassword') && hasError(registerForm, 'confirmPassword', 'required')">Hasło jest wymagane.</small>
         </div>
       </div>
+      <div class="form-horizontal card card-body bg-light mb-2 mt-2">
+        <h5>Dane podstawowe</h5>
+        <hr />
+        <div class="form-group row">
+          <label for="firstName" class="control-label">Imię</label>
+          <input type="text" formControlName="firstName" id="firstName" class="form-control" />
+          <small *ngIf="validateControl(registerForm, 'firstName') && hasError(registerForm, 'firstName', 'required')">Imię jest wymagane.</small>
+        </div>
+        <div class="form-group row">
+          <label for="lastName" class="control-label">Nazwisko</label>
+          <input type="text" formControlName="lastName" id="lastName" class="form-control" />
+          <small *ngIf="validateControl(registerForm, 'lastName') && hasError(registerForm, 'lastName', 'required')">Nazwisko jest wymagane.</small>
+        </div>
+        <div class="form-group row">
+          <label for="sex" class="control-label">Płeć</label>
+          <div class="form-group container" id="sex">
+            <div class="form-group row">
+              <input type="radio" formControlName="sex" name="sex" value="M" class="form-check" autocomplete="off" checked />
+              <label class="form-check-label">mężczyzna</label>
+            </div>
+            <div class="form-group row">
+              <input type="radio" formControlName="sex" name="sex" value="F" class="form-check" autocomplete="off" />
+              <label class="form-check-label">kobieta</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="form-group">
           <button class="btn btn-primary" type="submit">Zarejestruj</button>
           <button class="btn btn-danger" type="button" (click)="redirectBack()">Wróć</button>

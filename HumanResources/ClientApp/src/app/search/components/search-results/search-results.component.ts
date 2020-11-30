@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/user/models/user.model';
 import { SearchService } from '../../services/search.service';
 
 @Component({
@@ -17,11 +17,12 @@ export class SearchResultsComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.users = null;
     this.getUsers();
   }
 
   public getUsers(): void {
-    const query = this.activatedRoute.snapshot.params.query;
+    const query = atob(this.activatedRoute.snapshot.params.query);
     this.search.getUsers(query)
       .subscribe(result => {
         this.users = of(result);

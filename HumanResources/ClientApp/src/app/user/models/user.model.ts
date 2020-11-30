@@ -1,6 +1,6 @@
 import { UserDetails } from './user-details.model';
 
-export interface User {
+export class User {
     id: string;
     email: string;
     accessToken: string;

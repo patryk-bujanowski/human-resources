@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from 'src/app/shared/authorization/authorization.service';
 import { FormComponentBase } from '../../../shared/components/form-component-base';
-import { UserAuthentication } from '../../../shared/models/user-authentication.model';
+import { UserAuthentication } from '../../../user/models/user-authentication.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,7 +36,7 @@ export class LoginComponent extends FormComponentBase implements OnInit {
 
     this.authorization.login(user)
       .subscribe(result => {
-        this.authorization.currentUser = result;
+        localStorage.setItem(this.authorization.currentUserKey, JSON.stringify(result));
         localStorage.setItem(this.authorization.accessTokenKey, result.accessToken);
         this.router.navigate(['/']);
       });
