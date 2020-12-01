@@ -2,6 +2,7 @@
 using HumanResources.Dto;
 using HumanResources.Models;
 using HumanResources.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,7 @@ namespace HumanResources.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserRegistrationDto userRegistration)
         {
             try
@@ -68,6 +70,7 @@ namespace HumanResources.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(UserAuthenticationDto userAuthentication)
         {
             try

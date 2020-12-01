@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthorizationService } from 'src/app/shared/authorization/authorization.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-edit',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserEditComponent implements OnInit {
 
-  constructor() { }
+  public userEditForm: FormGroup;
+
+  public get userProfile(): User {
+    return this.authorization.currentUser;
+  }
+
+  constructor(private authorization: AuthorizationService) { }
 
   ngOnInit(): void {
+    this.userEditForm = new FormGroup({
+      firstName: new FormControl(this.userProfile.firstName, [Validators.required]),
+      lastName: new FormControl(this.userProfile.lastName, [Validators.required])
+    });
+  }
+
+  public editUser(userEditFormValue: any): void {
+
   }
 
 }

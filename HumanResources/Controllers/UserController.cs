@@ -9,20 +9,27 @@ using HumanResources.Data;
 using HumanResources.Models;
 using HumanResources.Repositories;
 using Microsoft.Extensions.Logging;
+using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace HumanResources.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
         private readonly IRepositoryWrapper repository;
+        private readonly UserManager<User> userManager;
 
-        public UserController(ILogger<UserController> logger, IRepositoryWrapper repository)
+        public UserController(ILogger<UserController> logger, IRepositoryWrapper repository, UserManager<User> userManager)
         {
             this.logger = logger;
             this.repository = repository;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -90,6 +97,35 @@ namespace HumanResources.Controllers
                 }
 
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost("avatar")]
+        public async Task<IActionResult> UploadAvatar(IFormFile file)
+        {
+            try
+            {
+                byte[] avatar = null;
+                string userEmail = HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    avatar = memoryStream.ToArray();
+                }
+
+                var user = await repository.Users.FindByEmail(userEmail).FirstOrDefaultAsync();
+                user.Avatar = Convert.ToBase64String(avatar);
+
+                repository.Users.Update(user);
+                await repository.SaveAsync();
+
+                return Ok();
             }
             catch (Exception ex)
             {

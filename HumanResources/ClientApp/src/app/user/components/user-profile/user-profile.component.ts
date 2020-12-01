@@ -14,6 +14,10 @@ export class UserProfileComponent implements OnInit {
     return this.authorization.currentUser;
   }
 
+  public get avatar(): string {
+    return `data:image/png;base64,${this.user.avatar}`;
+  }
+
   constructor(private authorization: AuthorizationService) { }
 
   ngOnInit(): void {

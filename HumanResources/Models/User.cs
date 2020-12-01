@@ -14,6 +14,8 @@ namespace HumanResources.Models
 
         public string Sex { get; set; }
 
+        public string Avatar { get; set; }
+
         public string DetailsId { get; set; }
 
         public UserDetails Details { get; set; }

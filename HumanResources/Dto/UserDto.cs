@@ -19,6 +19,8 @@ namespace HumanResources.Dto
 
         public string Sex { get; set; }
 
+        public string Avatar { get; set; }
+
         public UserDetailsDto Details { get; set; }
     }
 }

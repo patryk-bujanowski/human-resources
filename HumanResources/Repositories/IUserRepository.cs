@@ -10,6 +10,8 @@ namespace HumanResources.Repositories
     {
         IQueryable<User> FindById(string id, bool withDetails = false);
 
+        IQueryable<User> FindByEmail(string email, bool withDetails = false);
+
         bool CheckIfExists(string id);
     }
 }

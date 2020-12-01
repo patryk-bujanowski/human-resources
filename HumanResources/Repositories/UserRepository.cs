@@ -17,10 +17,18 @@ namespace HumanResources.Repositories
 
         public IQueryable<User> FindById(string id, bool withDetails = false)
         {
-            var employee = FindByCondition(e => e.Id == id);
+            var user = FindByCondition(u => u.Id == id);
             if (withDetails)
-                return employee.Include(e => e.Details);
-            return employee;
+                return user.Include(u => u.Details);
+            return user;
+        }
+
+        public IQueryable<User> FindByEmail(string email, bool withDetails = false)
+        {
+            var user = FindByCondition(u => u.Email == email);
+            if (withDetails)
+                return user.Include(u => u.Details);
+            return user;
         }
 
         public bool CheckIfExists(string id)

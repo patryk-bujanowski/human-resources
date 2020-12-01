@@ -7,5 +7,6 @@ export class User {
     firstName: string;
     lastName: string;
     sex: string;
+    avatar: string;
     details: UserDetails;
 }

@@ -47,6 +47,8 @@ namespace HumanResources
 
             services.ConfigureAuthentication();
 
+            services.ConfigureFormOptions();
+
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
