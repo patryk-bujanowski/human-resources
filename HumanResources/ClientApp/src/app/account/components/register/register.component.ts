@@ -29,7 +29,10 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
       confirmPassword: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      sex: new FormControl('', [Validators.required])
+      sex: new FormControl('', [Validators.required]),
+      birthdate: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required])
     });
   }
 
@@ -39,7 +42,10 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
       password: registerFormValue.password,
       firstName: registerFormValue.firstName,
       lastName: registerFormValue.lastName,
-      sex: registerFormValue.sex
+      sex: registerFormValue.sex,
+      birthdate: registerFormValue.birthdate,
+      city: registerFormValue.city,
+      phoneNumber: registerFormValue.phoneNumber
     };
 
     this.authorization.register(user)
@@ -49,9 +55,4 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
         }
       });
   }
-
-  public redirectBack(): void {
-    this.location.back();
-  }
-
 }

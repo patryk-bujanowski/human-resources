@@ -4,4 +4,7 @@ export interface UserRegistration {
     firstName: string;
     lastName: string;
     sex: string;
+    birthdate: Date;
+    city: string;
+    phoneNumber: string;
 }

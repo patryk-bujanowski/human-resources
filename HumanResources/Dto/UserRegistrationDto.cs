@@ -1,3 +1,5 @@
+using System;
+
 namespace HumanResources.Dto 
 {
     public class UserRegistrationDto
@@ -11,5 +13,11 @@ namespace HumanResources.Dto
         public string LastName { get; set; }
 
         public string Sex { get; set; }
+
+        public DateTime Birthdate { get; set; }
+
+        public string City { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

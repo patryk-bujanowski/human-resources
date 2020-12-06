@@ -41,9 +41,4 @@ export class LoginComponent extends FormComponentBase implements OnInit {
         this.router.navigate(['/']);
       });
   }
-
-  public redirectBack(): void {
-    this.location.back();
-  }
-
 }

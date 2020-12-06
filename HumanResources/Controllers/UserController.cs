@@ -13,6 +13,8 @@ using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using HumanResources.Dto;
 
 namespace HumanResources.Controllers
 {
@@ -22,12 +24,17 @@ namespace HumanResources.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
+        private readonly IMapper mapper;
         private readonly IRepositoryWrapper repository;
         private readonly UserManager<User> userManager;
 
-        public UserController(ILogger<UserController> logger, IRepositoryWrapper repository, UserManager<User> userManager)
+        public UserController(ILogger<UserController> logger, 
+            IMapper mapper,
+            IRepositoryWrapper repository, 
+            UserManager<User> userManager)
         {
             this.logger = logger;
+            this.mapper = mapper;
             this.repository = repository;
             this.userManager = userManager;
         }
@@ -37,8 +44,9 @@ namespace HumanResources.Controllers
         {
             try
             {
-                var employees = await repository.Users.FindAll().ToListAsync();
-                return Ok(employees);
+                var users = await repository.Users.FindAll().ToListAsync();
+                var result = mapper.Map<List<UserDto>>(users);
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -48,18 +56,19 @@ namespace HumanResources.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(string id, [FromQuery] bool withDetails = false)
+        public async Task<IActionResult> GetUser(string id)
         {
             try
             {
-                var employee = await repository.Users.FindById(id, withDetails).FirstOrDefaultAsync();
+                var user = await repository.Users.FindById(id).FirstOrDefaultAsync();
 
-                if (employee == null)
+                if (user == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(employee);
+                var result = mapper.Map<UserDto>(user);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -126,46 +135,6 @@ namespace HumanResources.Controllers
                 await repository.SaveAsync();
 
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostUser(User user)
-        {
-            try
-            {
-                repository.Users.Create(user);
-                await repository.SaveAsync();
-
-                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            try
-            {
-                var employee = await repository.Users.FindById(id).FirstOrDefaultAsync();
-                if (employee == null)
-                {
-                    return NotFound();
-                }
-
-                repository.Users.Delete(employee);
-                await repository.SaveAsync();
-
-                return NoContent();
             }
             catch (Exception ex)
             {

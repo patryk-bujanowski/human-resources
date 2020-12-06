@@ -23,7 +23,5 @@ namespace HumanResources.Data
 
             builder.Build();
         }
-
-        public DbSet<UserDetails> UserDetails { get; set; }
     }
 }

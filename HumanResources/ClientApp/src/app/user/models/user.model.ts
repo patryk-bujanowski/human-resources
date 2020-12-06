@@ -1,5 +1,3 @@
-import { UserDetails } from './user-details.model';
-
 export class User {
     id: string;
     email: string;
@@ -7,6 +5,8 @@ export class User {
     firstName: string;
     lastName: string;
     sex: string;
+    birthdate: Date;
     avatar: string;
-    details: UserDetails;
+    city: string;
+    phoneNumber: string;
 }

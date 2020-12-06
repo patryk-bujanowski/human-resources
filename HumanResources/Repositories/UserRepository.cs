@@ -1,6 +1,5 @@
 ﻿using HumanResources.Data;
 using HumanResources.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +14,15 @@ namespace HumanResources.Repositories
         {
         }
 
-        public IQueryable<User> FindById(string id, bool withDetails = false)
+        public IQueryable<User> FindById(string id)
         {
             var user = FindByCondition(u => u.Id == id);
-            if (withDetails)
-                return user.Include(u => u.Details);
             return user;
         }
 
-        public IQueryable<User> FindByEmail(string email, bool withDetails = false)
+        public IQueryable<User> FindByEmail(string email)
         {
             var user = FindByCondition(u => u.Email == email);
-            if (withDetails)
-                return user.Include(u => u.Details);
             return user;
         }
 

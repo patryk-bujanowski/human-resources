@@ -21,7 +21,10 @@ export class UserEditComponent implements OnInit {
   ngOnInit(): void {
     this.userEditForm = new FormGroup({
       firstName: new FormControl(this.userProfile.firstName, [Validators.required]),
-      lastName: new FormControl(this.userProfile.lastName, [Validators.required])
+      lastName: new FormControl(this.userProfile.lastName, [Validators.required]),
+      birthdate: new FormControl(this.userProfile.birthdate, [Validators.required]),
+      city: new FormControl(this.userProfile.city, [Validators.required]),
+      phoneNumber: new FormControl(this.userProfile.phoneNumber, [Validators.required])
     });
   }
 

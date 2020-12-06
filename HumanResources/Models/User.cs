@@ -16,8 +16,8 @@ namespace HumanResources.Models
 
         public string Avatar { get; set; }
 
-        public string DetailsId { get; set; }
+        public DateTime Birthdate { get; set; }
 
-        public UserDetails Details { get; set; }
+        public string City { get; set; }
     }
 }

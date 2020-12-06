@@ -8,9 +8,9 @@ namespace HumanResources.Repositories
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-        IQueryable<User> FindById(string id, bool withDetails = false);
+        IQueryable<User> FindById(string id);
 
-        IQueryable<User> FindByEmail(string email, bool withDetails = false);
+        IQueryable<User> FindByEmail(string email);
 
         bool CheckIfExists(string id);
     }

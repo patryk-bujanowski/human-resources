@@ -21,6 +21,10 @@ namespace HumanResources.Dto
 
         public string Avatar { get; set; }
 
-        public UserDetailsDto Details { get; set; }
+        public DateTime Birthdate { get; set; }
+
+        public string City { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

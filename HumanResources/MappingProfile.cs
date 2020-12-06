@@ -13,10 +13,11 @@ namespace HumanResources
         public MappingProfile()
         {
             CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            CreateMap<UserDto, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
 
-            CreateMap<UserDetails, UserDetailsDto>();
-            CreateMap<UserDetailsDto, UserDetails>();
+            CreateMap<UserRegistrationDto, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

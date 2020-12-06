@@ -19,8 +19,6 @@ namespace HumanResources.Extensions
         private static void BuildEntities(this ModelBuilder builder)
         {
             builder.BuildUser();
-
-            builder.BuildUserDetails();
         }
 
         private static void BuildUser(this ModelBuilder builder)
@@ -36,19 +34,17 @@ namespace HumanResources.Extensions
                     .IsRequired();
 
                 entity.Property(e => e.Sex)
+                    .IsRequired()
                     .HasMaxLength(1);
 
-                entity.HasOne(e => e.Details)
-                    .WithOne(ed => ed.User)
-                    .HasForeignKey<User>(e => e.DetailsId);
-            });
-        }
+                entity.Property(e => e.Birthdate)
+                    .IsRequired();
 
-        private static void BuildUserDetails(this ModelBuilder builder)
-        {
-            builder.Entity<UserDetails>(entity =>
-            {
-                entity.HasKey(ed => ed.Id);
+                entity.Property(e => e.City)
+                    .IsRequired();
+
+                entity.Property(e => e.PhoneNumber)
+                    .IsRequired();
             });
         }
 

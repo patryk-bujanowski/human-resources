@@ -43,14 +43,7 @@ namespace HumanResources.Controllers
         {
             try
             {
-                var user = new User 
-                { 
-                    UserName = userRegistration.Email, 
-                    Email = userRegistration.Email,
-                    FirstName = userRegistration.FirstName,
-                    LastName = userRegistration.LastName,
-                    Sex = userRegistration.Sex 
-                };
+                var user = mapper.Map<User>(userRegistration);
                 var result = await userManager.CreateAsync(user, userRegistration.Password);
                 if (result.Succeeded)
                 {
