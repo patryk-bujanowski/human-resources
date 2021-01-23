@@ -1,4 +1,5 @@
-﻿using HumanResources.Models;
+﻿using System.Collections.Immutable;
+using HumanResources.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace HumanResources.Extensions
         private static void BuildEntities(this ModelBuilder builder)
         {
             builder.BuildUser();
+
+            builder.BuildMessage();
         }
 
         private static void BuildUser(this ModelBuilder builder)
@@ -44,6 +47,26 @@ namespace HumanResources.Extensions
                     .IsRequired();
 
                 entity.Property(e => e.PhoneNumber)
+                    .IsRequired();
+            });
+        }
+
+        private static void BuildMessage(this ModelBuilder builder)
+        {
+            builder.Entity<Message>(entity => 
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.SenderId)
+                    .IsRequired();
+
+                entity.Property(e => e.ReceiverId)
+                    .IsRequired();
+
+                entity.Property(e => e.SentDate)
+                    .IsRequired();
+
+                entity.Property(e => e.Content)
                     .IsRequired();
             });
         }

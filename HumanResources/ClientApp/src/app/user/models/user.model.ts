@@ -9,4 +9,8 @@ export class User {
     avatar: string;
     city: string;
     phoneNumber: string;
+
+    get fullName(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
 }

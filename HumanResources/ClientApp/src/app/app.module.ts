@@ -6,19 +6,16 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { SearchMenuComponent } from './search-menu/search-menu.component';
 import { SharedModule } from './shared/shared.module';
 import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
 import { AuthorizationGuard } from './shared/authorization/authorization.guard';
 import { AccountMenuComponent } from './account-menu/account-menu.component';
-import { AuthorizationService } from './shared/authorization/authorization.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     SearchMenuComponent,
     AccountMenuComponent
   ],
@@ -29,11 +26,11 @@ import { AuthorizationService } from './shared/authorization/authorization.servi
     ReactiveFormsModule,
     SharedModule,
     RouterModule.forRoot([
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: 'home', component: HomeComponent, canActivate: [AuthorizationGuard] },
+      { path: '', pathMatch: 'full', redirectTo: 'user/dashboard' },
       { path: 'account', loadChildren: () => import('src/app/account/account.module').then(m => m.AccountModule) },
       { path: 'user', loadChildren: () => import('src/app/user/user.module').then(m => m.UserModule), canActivate: [AuthorizationGuard] },
-      { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizationGuard] }
+      { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizationGuard] },
+      { path: 'messages', loadChildren: () => import('src/app/message/message.module').then(m => m.MessageModule), canActivate: [AuthorizationGuard]  }
     ])
   ],
   providers: [

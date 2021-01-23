@@ -9,6 +9,8 @@ namespace HumanResources.Repositories
     {
         IUserRepository Users { get; }
 
+        IMessageRepository Messages { get; }
+
         void Save();
 
         Task SaveAsync();

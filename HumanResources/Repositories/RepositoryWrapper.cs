@@ -10,8 +10,11 @@ namespace HumanResources.Repositories
     {
         private readonly ApplicationDbContext context;
         private IUserRepository users;
+        private IMessageRepository messages;
 
         public IUserRepository Users => users ??= new UserRepository(context);
+
+        public IMessageRepository Messages => messages ??= new MessageRepository(context);
 
         public RepositoryWrapper(ApplicationDbContext context)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace HumanResources.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
-    {
+    {        
         public ApplicationDbContext(DbContextOptions options) 
             : base(options)
         {
