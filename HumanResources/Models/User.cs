@@ -19,5 +19,7 @@ namespace HumanResources.Models
         public DateTime Birthdate { get; set; }
 
         public string City { get; set; }
+
+        public ICollection<User> Contacts { get; set; }
     }
 }

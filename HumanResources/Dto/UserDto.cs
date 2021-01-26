@@ -26,5 +26,7 @@ namespace HumanResources.Dto
         public string City { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public ICollection<UserDto> Contacts { get; set; }
     }
 }
