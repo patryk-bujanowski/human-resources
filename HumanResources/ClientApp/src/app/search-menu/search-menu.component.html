@@ -3,3 +3,7 @@
     placeholder="Szukaj" aria-label="Szukaj">
   <button class="btn btn-outline-primary" type="submit" [disabled]="searchForm.invalid" >Szukaj</button>
 </form>
+
+<ng-template #errorModal>
+  <app-error-modal [message]="modalMessage"></app-error-modal>
+</ng-template>

@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserRegistration } from 'src/app/user/models/user-registration.model';
+import { ModalService } from '../../../shared/services/modal.service';
 
 @Component({
   selector: 'app-register',
@@ -18,8 +19,8 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
 
   constructor(private authorization: AuthorizationService, 
     private router: Router,
-    private location: Location) {
-    super();
+    protected modal: ModalService) {
+    super(modal);
    }
 
   ngOnInit(): void {
@@ -53,6 +54,8 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
         if (result !== null) {
           this.router.navigate(['/']);
         }
+      }, error => {
+        this.handleError(error.message);
       });
   }
 }

@@ -4,6 +4,7 @@ import { AuthorizationService } from '../shared/authorization/authorization.serv
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormComponentBase } from '../shared/components/form-component-base';
 import { Router } from '@angular/router';
+import { ModalService } from '../shared/services/modal.service';
 
 @Component({
   selector: 'app-search-menu',
@@ -19,8 +20,9 @@ export class SearchMenuComponent extends FormComponentBase implements OnInit {
   }
 
   constructor(private authorization: AuthorizationService,
-    private router: Router) {
-    super();
+    private router: Router,
+    protected modal: ModalService) {
+    super(modal);
    }
 
   ngOnInit(): void {
