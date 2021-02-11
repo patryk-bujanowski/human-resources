@@ -4,19 +4,19 @@ import { RepositoryService } from './services/repository.service';
 import { ValidationService } from './services/validation.service';
 import { AuthorizationService } from './authorization/authorization.service';
 import { ModalService } from './services/modal.service';
-import { ErrorModalComponent } from './components/error-modal/error-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MessageModalComponent } from './components/message-modal/message-modal.component';
 
 @NgModule({
   declarations: [
-    ErrorModalComponent
+    MessageModalComponent
   ],
   imports: [
     CommonModule,
     NgbModule
   ],
   exports: [
-    ErrorModalComponent
+    MessageModalComponent
   ],
   providers: [
     RepositoryService,

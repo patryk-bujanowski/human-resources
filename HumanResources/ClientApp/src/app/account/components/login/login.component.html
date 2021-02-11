@@ -20,11 +20,14 @@
             <div class="form-group row">
                 <a class="nav-item" routerLink="/account/register">Nie masz konta? Zarejestruj się.</a> 
             </div>
+            <div class="form-group row">
+                <a class="nav-item" routerLink="/account/forgot-password">Nie pamiętasz hasła?</a>
+            </div>
         </div>
     </form>
 </section>
 
-<ng-template #errorModal>
-    <app-error-modal [message]="modalMessage"></app-error-modal>
+<ng-template #messageModal>
+    <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
 </ng-template>
   

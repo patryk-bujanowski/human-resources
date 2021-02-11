@@ -35,6 +35,8 @@ namespace HumanResources
 
             services.ConfigureDbContext(Configuration);
 
+            services.ConfigureTokenProvider();
+
             services.ConfigureScoped();
 
             services.ConfigureTransient();

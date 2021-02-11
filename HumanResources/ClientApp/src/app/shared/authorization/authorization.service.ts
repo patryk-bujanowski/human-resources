@@ -6,6 +6,8 @@ import { environment } from '../../../environments/environment.prod';
 import { User } from '../../user/models/user.model';
 import { Observable, pipe, Subscription } from 'rxjs';
 import { UserRegistration } from 'src/app/user/models/user-registration.model';
+import { ForgotPassword } from '../../account/models/forgot-password.model';
+import { ResetPassword } from '../../account/models/reset-password.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,16 @@ export class AuthorizationService {
 
   public logout(): void {
     localStorage.removeItem(this.accessTokenKey);
+  }
+
+  public forgotPassword(model: ForgotPassword): Observable<string> {
+    const url = environment.apiUrl + '/api/account/forgot-password';
+    return this.http.post<string>(url, model);
+  }
+
+  public resetPassword(model: ResetPassword): Observable<string> {
+    const url = environment.apiUrl + '/api/account/reset-password';
+    return this.http.post<string>(url, model);
   }
 
   public get token(): string {

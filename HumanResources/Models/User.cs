@@ -8,6 +8,8 @@ namespace HumanResources.Models
 {
     public class User : IdentityUser
     {
+        public const char ContactsSeparator = ';';
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -20,6 +22,8 @@ namespace HumanResources.Models
 
         public string City { get; set; }
 
-        public ICollection<User> Contacts { get; set; }
+        public ICollection<string> Contacts { get; set; }
+
+        public ICollection<BlogEntry> BlogEntries { get; set; }
     }
 }

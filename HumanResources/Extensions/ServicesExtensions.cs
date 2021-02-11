@@ -34,6 +34,7 @@ namespace HumanResources.Extensions
             {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -64,6 +65,14 @@ namespace HumanResources.Extensions
                 });
         }
 
+        public static void ConfigureTokenProvider(this IServiceCollection services)
+        {
+            services.Configure<DataProtectionTokenProviderOptions>(options => 
+            {
+                options.TokenLifespan = TimeSpan.FromHours(1);
+            });
+        }
+
         public static void ConfigureSpa(this IServiceCollection services)
         {
             // In production, the Angular files will be served from this directory
@@ -81,6 +90,8 @@ namespace HumanResources.Extensions
         public static void ConfigureScoped(this IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         public static void ConfigureTransient(this IServiceCollection services)

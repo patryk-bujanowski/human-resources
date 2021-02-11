@@ -11,6 +11,8 @@ namespace HumanResources.Repositories
 
         IMessageRepository Messages { get; }
 
+        IBlogEntryRepository BlogEntries { get; }
+
         void Save();
 
         Task SaveAsync();

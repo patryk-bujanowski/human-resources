@@ -5,6 +5,7 @@ using HumanResources.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,18 +24,21 @@ namespace HumanResources.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly ITokenService tokenService;
+        private readonly IEmailSender emailSender;
 
         public AccountController(ILogger<AccountController> logger, 
             IMapper mapper, 
             UserManager<User> userManager, 
             SignInManager<User> signInManager, 
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IEmailSender emailSender)
         {
             this.logger = logger;
             this.mapper = mapper;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.tokenService = tokenService;
+            this.emailSender = emailSender;
         }
 
         [HttpPost("register")]
@@ -90,6 +94,48 @@ namespace HumanResources.Controllers
                 logger.LogError(ex.Message);
                 return StatusCode(500);
             }
+        }
+
+        [HttpPost("forgot-password")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+        {
+            try
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
+                string token = await userManager.GeneratePasswordResetTokenAsync(user);
+                string callback = Url.Action("reset-password", "account", new { token, model.Email }, Request.Scheme);
+                await emailSender.SendEmailAsync(model.Email, "Human Resources - resetowanie hasła", callback);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok();
         }
     }
 }

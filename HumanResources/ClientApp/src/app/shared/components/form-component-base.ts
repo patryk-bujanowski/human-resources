@@ -4,10 +4,11 @@ import { ViewChild, TemplateRef } from '@angular/core';
 
 export abstract class FormComponentBase {
 
+  public modalTitle: string;  
   public modalMessage: string;
 
-  @ViewChild('errorModal')
-  public errorModal: TemplateRef<any>;
+  @ViewChild('messageModal')
+  public modalRef: TemplateRef<any>;
 
   constructor(protected modal: ModalService) { }
 
@@ -25,8 +26,15 @@ export abstract class FormComponentBase {
     return false;
   }
 
-  protected handleError(message: string): void {
+  protected showMessage(title: string, message: string): Promise<any> {
+    this.modalTitle = title;
     this.modalMessage = message;
-    this.modal.open(this.errorModal);
+    return this.modal.open(this.modalRef, { backdrop: 'static' });
+  }
+
+  protected handleError(message: string): Promise<any> {
+    this.modalTitle = 'Błąd!';
+    this.modalMessage = message;
+    return this.modal.open(this.modalRef, { backdrop: 'static' });
   }
 }

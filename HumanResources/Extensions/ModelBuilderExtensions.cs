@@ -1,10 +1,13 @@
-﻿using System.Collections.Immutable;
+﻿using System.Globalization;
+using System.Collections.Immutable;
 using HumanResources.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HumanResources.Extensions
 {
@@ -22,6 +25,8 @@ namespace HumanResources.Extensions
             builder.BuildUser();
 
             builder.BuildMessage();
+
+            builder.BuildBlogEntry();
         }
 
         private static void BuildUser(this ModelBuilder builder)
@@ -48,6 +53,19 @@ namespace HumanResources.Extensions
 
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired();
+
+                var splitStringConverter = new ValueConverter<ICollection<string>, string>(
+                    e => string.Join(User.ContactsSeparator, e), 
+                        e => e.Split(new[] { User.ContactsSeparator }));
+                
+                entity.Property(e => e.Contacts)
+                    .HasConversion(splitStringConverter);
+
+                var valueComparer = new ValueComparer<ICollection<string>>(true);
+
+                entity.Property(e => e.Contacts)
+                    .Metadata
+                    .SetValueComparer(valueComparer);
             });
         }
 
@@ -57,16 +75,36 @@ namespace HumanResources.Extensions
             {
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.SentDate)
+                    .IsRequired();
+
                 entity.Property(e => e.SenderId)
                     .IsRequired();
 
                 entity.Property(e => e.ReceiverId)
                     .IsRequired();
 
-                entity.Property(e => e.SentDate)
+                entity.Property(e => e.Content)
+                    .IsRequired();
+            });
+        }
+
+        private static void BuildBlogEntry(this ModelBuilder builder)
+        {
+            builder.Entity<BlogEntry>(entity => 
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.AuthorId)
                     .IsRequired();
 
-                entity.Property(e => e.Content)
+                entity.Property(e => e.CreationDate)
+                    .IsRequired();
+
+                entity.Property(e => e.ModificationDate)
+                    .IsRequired();
+
+                entity.Property(e => e.Body)
                     .IsRequired();
             });
         }

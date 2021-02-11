@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 namespace HumanResources.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
-    {        
+    {      
         public DbSet<Message> Messages { get; set; }
+
+        public DbSet<BlogEntry> BlogEntries { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) 
             : base(options)

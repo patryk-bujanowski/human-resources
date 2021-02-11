@@ -19,8 +19,4 @@ export class ModalService {
     this.modalRef.close(result);
   }
 
-  public dismiss(reason?: any): void {
-    this.modalRef.dismiss(reason);
-  }
-
 }
