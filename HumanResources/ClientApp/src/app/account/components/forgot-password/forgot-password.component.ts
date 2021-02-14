@@ -33,14 +33,11 @@ export class ForgotPasswordComponent extends FormComponentBase implements OnInit
     };
 
     this.authorization.forgotPassword(forgotPassword)
-      .subscribe(result => {
-        if (result !== null) {
+      .subscribe(() => {
           this.showMessage('Wiadomość email wysłana', 'Proszę sprawdzić swoją skrynkę email, na którą została wysłana wiadomość z kodem resetującym hasło.')
-            .then(() => this.router.navigate['/reset-password']);
-        }
-      }, error => {
+            .then(() => this.router.navigate(['/account/reset-password'], { queryParams: { email: forgotPasswordFormValue.email } }));
+        }, error => {
         this.handleError(error.message);
-      })
-  }
-
+      });
+    }
 }

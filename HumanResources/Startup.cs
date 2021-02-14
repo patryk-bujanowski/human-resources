@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using HumanResources.Extensions;
 using Newtonsoft.Json;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace HumanResources
 {
@@ -51,6 +52,8 @@ namespace HumanResources
 
             services.ConfigureFormOptions();
 
+            services.ConfigureSwagger();
+
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
@@ -58,13 +61,22 @@ namespace HumanResources
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 context.Database.Migrate();
             }
+
+            app.ConfigureExceptionHandler(loggerFactory);
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Human Resources API V1");
+            });
 
             app.UseCors(options =>
             {

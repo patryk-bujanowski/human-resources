@@ -40,107 +40,87 @@ namespace HumanResources.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [Produces(typeof(List<UserDto>))]
         public async Task<IActionResult> GetUsers()
         {
-            try
-            {
-                var users = await repository.Users.FindAll().ToListAsync();
-                var result = mapper.Map<List<UserDto>>(users);
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
+            var users = await repository.Users.FindAll().ToListAsync();
+            var result = mapper.Map<List<UserDto>>(users);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [Produces(typeof(UserDto))]
         public async Task<IActionResult> GetUser(string id)
         {
-            try
-            {
-                var user = await repository.Users.FindById(id).FirstOrDefaultAsync();
+            var user = await repository.Users.FindById(id).FirstOrDefaultAsync();
 
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                var result = mapper.Map<UserDto>(user);
-                return Ok(result);
-            }
-            catch (Exception ex)
+            if (user == null)
             {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
+                return NotFound();
             }
+
+            var result = mapper.Map<UserDto>(user);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> PutUser(string id, User user)
         {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            repository.Users.Update(user);
+
             try
             {
-                if (id != user.Id)
-                {
-                    return BadRequest();
-                }
-
-                repository.Users.Update(user);
-
-                try
-                {
-                    await repository.SaveAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!repository.Users.CheckIfExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return NoContent();
+                await repository.SaveAsync();
             }
-            catch (Exception ex)
+            catch (DbUpdateConcurrencyException)
             {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
+                if (!repository.Users.CheckIfExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
+
+            return NoContent();
         }
 
         [HttpPost("avatar")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> UploadAvatar(IFormFile file)
         {
-            try
+            byte[] avatar = null;
+            string userEmail = HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+
+            using (var memoryStream = new MemoryStream())
             {
-                byte[] avatar = null;
-                string userEmail = HttpContext.User.FindFirst(ClaimTypes.Email).Value;
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(memoryStream);
-                    avatar = memoryStream.ToArray();
-                }
-
-                var user = await repository.Users.FindByEmail(userEmail).FirstOrDefaultAsync();
-                user.Avatar = Convert.ToBase64String(avatar);
-
-                repository.Users.Update(user);
-                await repository.SaveAsync();
-
-                return Ok();
+                await file.CopyToAsync(memoryStream);
+                avatar = memoryStream.ToArray();
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
+
+            var user = await repository.Users.FindByEmail(userEmail).FirstOrDefaultAsync();
+            user.Avatar = Convert.ToBase64String(avatar);
+
+            repository.Users.Update(user);
+            await repository.SaveAsync();
+
+            return Ok();
         }
     }
 }

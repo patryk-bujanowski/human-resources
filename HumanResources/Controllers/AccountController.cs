@@ -43,84 +43,75 @@ namespace HumanResources.Controllers
 
         [HttpPost("register")]
         [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [Produces(typeof(UserDto))]
         public async Task<IActionResult> Register(UserRegistrationDto userRegistration)
         {
-            try
+            var user = mapper.Map<User>(userRegistration);
+            var result = await userManager.CreateAsync(user, userRegistration.Password);
+            if (result.Succeeded)
             {
-                var user = mapper.Map<User>(userRegistration);
-                var result = await userManager.CreateAsync(user, userRegistration.Password);
-                if (result.Succeeded)
-                {
-                    logger.LogInformation($"Użytkownik \"{user.UserName}\" zarejestrował się.");
-                    var registeredUser = await userManager.FindByEmailAsync(userRegistration.Email);
+                logger.LogInformation($"Użytkownik \"{user.UserName}\" zarejestrował się.");
+                var registeredUser = await userManager.FindByEmailAsync(userRegistration.Email);
 
-                    return Ok(mapper.Map<UserDto>(registeredUser));
-                }
+                return Ok(mapper.Map<UserDto>(registeredUser));
+            }
 
-                return BadRequest(result.Errors);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [Produces(typeof(UserDto))]
         public async Task<IActionResult> Login(UserAuthenticationDto userAuthentication)
         {
-            try
+            var user = await userManager.FindByEmailAsync(userAuthentication.Email);
+            if (user != null)
             {
-                var user = await userManager.FindByEmailAsync(userAuthentication.Email);
-                if (user != null)
+                var result = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, userAuthentication.Password);
+                if (result == PasswordVerificationResult.Success)
                 {
-                    var result = userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, userAuthentication.Password);
-                    if (result == PasswordVerificationResult.Success)
-                    {
-                        string token = tokenService.GenerateAccessToken(user);
-                        var loggedInUser = mapper.Map<UserDto>(user);
-                        loggedInUser.AccessToken = token;
+                    string token = tokenService.GenerateAccessToken(user);
+                    var loggedInUser = mapper.Map<UserDto>(user);
+                    loggedInUser.AccessToken = token;
 
-                        return Ok(loggedInUser);
-                    }
-                    return BadRequest();
+                    return Ok(loggedInUser);
                 }
-
                 return BadRequest();
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
+
+            return BadRequest();
         }
 
         [HttpPost("forgot-password")]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
-            try
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-
-                string token = await userManager.GeneratePasswordResetTokenAsync(user);
-                string callback = Url.Action("reset-password", "account", new { token, model.Email }, Request.Scheme);
-                await emailSender.SendEmailAsync(model.Email, "Human Resources - resetowanie hasła", callback);
-
-                return Ok();
+                return BadRequest();
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(500);
-            }
+
+            string token = await userManager.GeneratePasswordResetTokenAsync(user);
+            string callback = Url.Action("reset-password", "account", new { token, model.Email }, Request.Scheme);
+            await emailSender.SendEmailAsync(model.Email, "Human Resources - resetowanie hasła", callback);
+
+            return Ok();
         }
 
+        [HttpPost("reset-password")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);

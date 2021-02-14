@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, enableProdMode } from '@angular/core';
 import { FormComponentBase } from '../../../shared/components/form-component-base';
 import { ModalService } from '../../../shared/services/modal.service';
 import { AuthorizationService } from '../../../shared/authorization/authorization.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ResetPassword } from '../../models/reset-password.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ResetPasswordComponent extends FormComponentBase implements OnInit {
 
-  public resetPasswordForm: FormGroup
+  public resetPasswordForm: FormGroup;
 
   constructor(private authorization: AuthorizationService,
     private router: Router,
@@ -30,7 +30,7 @@ export class ResetPasswordComponent extends FormComponentBase implements OnInit 
     });
   }
 
-  public requestPasswordReset(resetPasswordFormValue: any) {
+  public requestPasswordReset(resetPasswordFormValue: any): void {
     const resetPassword: ResetPassword = {
       password: resetPasswordFormValue.password,
       email: resetPasswordFormValue.email,
