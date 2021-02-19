@@ -3,13 +3,13 @@
         <div class="card-body">
             <div class="jumbotron">
                 <img src="{{ avatar }}" alt="[brak awatara]" class="avatar-256" />
-                <h3 class="card-title">{{ user.firstName + ' ' + user.lastName }}</h3>
+                <h3 class="card-title">{{ firstName + ' ' + lastName }}</h3>
             </div>
             <div class="card-text">
-                <p>Data urodzenia: <b>{{ user.birthdate | date: 'yyyy-MM-dd' }}</b></p>
-                <p>Miasto: <b>{{ user.city }}</b></p>
-                <p>Adres email: <b>{{ user.email }}</b></p>
-                <p>Numer telefonu: <b>{{ user.phoneNumber }}</b></p>
+                <p>Data urodzenia: <b>{{ birthdate | date: 'yyyy-MM-dd' }}</b></p>
+                <p>Miasto: <b>{{ city }}</b></p>
+                <p>Adres email: <b>{{ email }}</b></p>
+                <p>Numer telefonu: <b>{{ phoneNumber }}</b></p>
                 <a routerLink="/user/edit" class="btn btn-primary">Edytuj profil</a>
             </div>
         </div>

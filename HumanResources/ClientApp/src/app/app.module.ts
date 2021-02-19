@@ -16,9 +16,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'user/dashboard' },
   { path: 'account', loadChildren: () => import('src/app/account/account.module').then(m => m.AccountModule) },
   { path: 'user', loadChildren: () => import('src/app/user/user.module').then(m => m.UserModule), canActivate: [AuthorizationGuard] },
-  { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizationGuard] },
-  { path: 'messages', loadChildren: () => import('src/app/message/message.module').then(m => m.MessageModule), canActivate: [AuthorizationGuard]  },
-  { path: 'cloud-drive', loadChildren: () => import('src/app/cloud-drive/cloud-drive.module').then(m => m.CloudDriveModule), canActivate: [AuthorizationGuard] }
+  { path: 'search', loadChildren: () => import('src/app/search/search.module').then(m => m.SearchModule), canActivate: [AuthorizationGuard] }
 ];
 
 @NgModule({

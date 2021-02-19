@@ -18,9 +18,6 @@ namespace HumanResources
 
             CreateMap<UserRegistrationDto, User>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
-
-            CreateMap<Message, MessageDto>();
-            CreateMap<MessageDto, Message>();
         }
     }
 }

@@ -1,74 +1,36 @@
 <section class="container">
-    <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
-      <h3>Zarejestruj się</h3>
+  <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)">
+    <h3>Zarejestruj się</h3>
+    <hr />
+    <div class="form-horizontal card card-body bg-light mb-2 mt-2">
+      <h5>Dane logowania</h5>
       <hr />
-      <div class="form-horizontal card card-body bg-light mb-2 mt-2">
-        <h5>Dane logowania</h5>
-        <hr />
-        <div class="form-group row">
-          <label for="email" class="control-label">Adres email</label>
-          <input type="email" formControlName="email" id="email" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'email') && hasError(registerForm, 'email', 'required')">Adres email jest wymagany.</small>
-        </div>
-        <div class="form-group row">
-            <label for="password" class="control-label">Hasło</label>
-            <input type="password" formControlName="password" id="password" class="form-control" />
-            <small *ngIf="validateControl(registerForm, 'password') && hasError(registerForm, 'password', 'required')">Hasło jest wymagane.</small>
-        </div>
-        <div class="form-group row">
-            <label for="confirmPassword" class="control-label">Potwierdź hasło</label>
-            <input type="password" formControlName="confirmPassword" id="confirmPassword" class="form-control" />
-            <small *ngIf="validateControl(registerForm, 'confirmPassword') && hasError(registerForm, 'confirmPassword', 'required')">Hasło jest wymagane.</small>
-        </div>
+      <div class="form-group row">
+        <label for="email" class="control-label">Adres email</label>
+        <input type="email" formControlName="email" id="email" class="form-control" />
+        <small *ngIf="validateControl(registerForm, 'email') && hasError(registerForm, 'email', 'required')"
+          class="error">Adres email jest wymagany.</small>
       </div>
-      <div class="form-horizontal card card-body bg-light mb-2 mt-2">
-        <h5>Dane podstawowe</h5>
-        <hr />
-        <div class="form-group row">
-          <label for="firstName" class="control-label">Imię</label>
-          <input type="text" formControlName="firstName" id="firstName" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'firstName') && hasError(registerForm, 'firstName', 'required')">Imię jest wymagane.</small>
-        </div>
-        <div class="form-group row">
-          <label for="lastName" class="control-label">Nazwisko</label>
-          <input type="text" formControlName="lastName" id="lastName" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'lastName') && hasError(registerForm, 'lastName', 'required')">Nazwisko jest wymagane.</small>
-        </div>
-        <div class="form-group row">
-          <label for="sex" class="control-label">Płeć</label>
-          <div class="form-group container" id="sex">
-            <div class="form-group row">
-              <input type="radio" formControlName="sex" name="sex" value="M" class="form-check" autocomplete="off" checked />
-              <label class="form-check-label">mężczyzna</label>
-            </div>
-            <div class="form-group row">
-              <input type="radio" formControlName="sex" name="sex" value="F" class="form-check" autocomplete="off" />
-              <label class="form-check-label">kobieta</label>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="birthdate" class="control-label">Data urodzenia</label>
-          <input type="date" formControlName="birthdate" id="birthdate" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'birthdate') && hasError(registerForm, 'birthdate', 'required')">Data urodzenia jest wymagana.</small>
-        </div>
-        <div class="form-group row">
-          <label for="city" class="control-label">Miasto</label>
-          <input type="text" formControlName="city" id="city" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'city') && hasError(registerForm, 'city', 'required')">Miasto jest wymagane.</small>
-        </div>
-        <div class="form-group row">
-          <label for="phoneNumber" class="control-label">Numer telefonu</label>
-          <input type="tel" formControlName="phoneNumber" id="phoneNumber" class="form-control" />
-          <small *ngIf="validateControl(registerForm, 'phoneNumber') && hasError(registerForm, 'phoneNumber', 'required')">Numer telefonu jest wymagany.</small>
-        </div>
-        <hr />
+      <div class="form-group row">
+        <label for="password" class="control-label">Hasło</label>
+        <input type="password" formControlName="password" id="password" class="form-control" />
+        <small *ngIf="validateControl(registerForm, 'password') && hasError(registerForm, 'password', 'required')"
+          class="error">Hasło jest wymagane.</small>
+      </div>
+      <div class="form-group row">
+        <label for="confirmPassword" class="control-label">Potwierdź hasło</label>
+        <input type="password" formControlName="confirmPassword" id="confirmPassword" class="form-control" />
+        <small
+          *ngIf="validateControl(registerForm, 'confirmPassword') && hasError(registerForm, 'confirmPassword', 'required')"
+          class="error">Hasło jest wymagane.</small>
+      </div>
+      <div class="form-group row">
         <button class="btn btn-primary btn-block" type="submit">Zarejestruj się</button>
       </div>
-    </form>
-  </section>
+    </div>
+  </form>
+</section>
 
 <ng-template #messageModal>
   <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
 </ng-template>
-  

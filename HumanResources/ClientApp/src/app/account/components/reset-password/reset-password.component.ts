@@ -15,18 +15,28 @@ export class ResetPasswordComponent extends FormComponentBase implements OnInit 
 
   public resetPasswordForm: FormGroup;
 
+  public resetPassword: ResetPassword;
+
   constructor(private authorization: AuthorizationService,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
+    private formBuilder: FormBuilder,
     protected modal: ModalService) {
     super(modal);
    }
 
   ngOnInit(): void {
-    this.resetPasswordForm = new FormGroup({
-      password: new FormControl('', [Validators.required]),
-      requiredPassword: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      token: new FormControl('', [Validators.required])
+    this.resetPassword = {
+      email: this.activatedRoute.snapshot.queryParams.email,
+      password: null,
+      token: this.activatedRoute.snapshot.queryParams.token
+    };
+
+    this.resetPasswordForm = this.formBuilder.group({
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+      email: [this.resetPassword.email, Validators.required, Validators.email],
+      token: [this.resetPassword.token, Validators.required]
     });
   }
 

@@ -23,10 +23,6 @@ namespace HumanResources.Extensions
         private static void BuildEntities(this ModelBuilder builder)
         {
             builder.BuildUser();
-
-            builder.BuildMessage();
-
-            builder.BuildBlogEntry();
         }
 
         private static void BuildUser(this ModelBuilder builder)
@@ -35,24 +31,8 @@ namespace HumanResources.Extensions
             {
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired();
-
-                entity.Property(e => e.LastName)
-                    .IsRequired();
-
                 entity.Property(e => e.Sex)
-                    .IsRequired()
                     .HasMaxLength(1);
-
-                entity.Property(e => e.Birthdate)
-                    .IsRequired();
-
-                entity.Property(e => e.City)
-                    .IsRequired();
-
-                entity.Property(e => e.PhoneNumber)
-                    .IsRequired();
 
                 var splitStringConverter = new ValueConverter<ICollection<string>, string>(
                     e => string.Join(User.ContactsSeparator, e), 
@@ -68,47 +48,7 @@ namespace HumanResources.Extensions
                     .SetValueComparer(valueComparer);
             });
         }
-
-        private static void BuildMessage(this ModelBuilder builder)
-        {
-            builder.Entity<Message>(entity => 
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.SentDate)
-                    .IsRequired();
-
-                entity.Property(e => e.SenderId)
-                    .IsRequired();
-
-                entity.Property(e => e.ReceiverId)
-                    .IsRequired();
-
-                entity.Property(e => e.Content)
-                    .IsRequired();
-            });
-        }
-
-        private static void BuildBlogEntry(this ModelBuilder builder)
-        {
-            builder.Entity<BlogEntry>(entity => 
-            {
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.AuthorId)
-                    .IsRequired();
-
-                entity.Property(e => e.CreationDate)
-                    .IsRequired();
-
-                entity.Property(e => e.ModificationDate)
-                    .IsRequired();
-
-                entity.Property(e => e.Body)
-                    .IsRequired();
-            });
-        }
-
+        
         private static void SeedData(this ModelBuilder builder)
         {
 

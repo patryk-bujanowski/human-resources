@@ -10,7 +10,14 @@ import { AuthorizationService } from '../shared/authorization/authorization.serv
 export class AccountMenuComponent implements OnInit {
 
   public get userProfile(): Observable<string> {
-    return of(this.authorization.currentUser.firstName + ' ' + this.authorization.currentUser.lastName);
+    const firstName = this.authorization.currentUser.firstName;
+    const lastName = this.authorization.currentUser.lastName;
+
+    if (firstName && lastName) {
+      return of(this.authorization.currentUser.firstName + ' ' + this.authorization.currentUser.lastName);
+    } else {
+      return of(this.authorization.currentUser.email);
+    }
   }
 
   public get avatar(): string {
