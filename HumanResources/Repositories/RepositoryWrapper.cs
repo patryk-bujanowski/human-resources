@@ -10,8 +10,11 @@ namespace HumanResources.Repositories
     {
         private readonly ApplicationDbContext context;
         private IUserRepository users;
+        private IBlogEntryRepository blogEntries;
 
         public IUserRepository Users => users ??= new UserRepository(context);
+
+        public IBlogEntryRepository BlogEntries => blogEntries ??= new BlogEntryRepository(context);
 
         public RepositoryWrapper(ApplicationDbContext context)
         {

@@ -9,6 +9,8 @@ namespace HumanResources.Repositories
     {
         IUserRepository Users { get; }
 
+        IBlogEntryRepository BlogEntries { get; }
+
         void Save();
 
         Task SaveAsync();

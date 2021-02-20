@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BlogEntry } from '../../../blog/models/blog-entry.model';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-dashboard.component.css']
 })
 export class UserDashboardComponent implements OnInit {
+
+  public blogEntries: BlogEntry[];
 
   constructor() { }
 

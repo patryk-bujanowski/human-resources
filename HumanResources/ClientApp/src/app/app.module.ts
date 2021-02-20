@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthorizationInterceptor } from './shared/authorization/authorization.interceptor';
 import { AuthorizationGuard } from './shared/authorization/authorization.guard';
 import { AccountMenuComponent } from './account-menu/account-menu.component';
+import { BlogModule } from './blog/blog.module';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'user/dashboard' },
@@ -32,7 +33,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BlogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true }

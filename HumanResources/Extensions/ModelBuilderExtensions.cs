@@ -23,6 +23,8 @@ namespace HumanResources.Extensions
         private static void BuildEntities(this ModelBuilder builder)
         {
             builder.BuildUser();
+
+            builder.BuildBlogEntry();
         }
 
         private static void BuildUser(this ModelBuilder builder)
@@ -46,6 +48,23 @@ namespace HumanResources.Extensions
                 entity.Property(e => e.Contacts)
                     .Metadata
                     .SetValueComparer(valueComparer);
+            });
+        }
+
+        private static void BuildBlogEntry(this ModelBuilder builder)
+        {
+            builder.Entity<BlogEntry>(entity => 
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Content)
+                    .IsRequired();
+
+                entity.Property(e => e.CreationDate)
+                    .IsRequired();
+
+                entity.Property(e => e.ModificationDate)
+                    .IsRequired();
             });
         }
         

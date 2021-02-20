@@ -1,0 +1,7 @@
+<section class="container" *ngFor="let entry of blogEntryList">
+    <app-blog-entry class="row" 
+        [author]="entry.author"
+        [content]="entry.content"
+        [modificationDate]="entry.modificationDate">
+    </app-blog-entry>
+</section>

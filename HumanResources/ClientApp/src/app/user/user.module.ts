@@ -6,6 +6,7 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { BlogModule } from '../blog/blog.module';
 
 const routes: Routes = [
   { path: '', component: UserProfileComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    BlogModule
   ],
   exports: [
     RouterModule

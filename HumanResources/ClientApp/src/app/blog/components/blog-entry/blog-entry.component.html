@@ -1,0 +1,11 @@
+<section class="card container">
+    <div class="card-body">
+        <h6 class="card-title">
+            <strong>{{ author.email }}</strong>
+        </h6>
+        <span class="card-text">{{ content }}</span>
+    </div>
+    <div class="card-footer text-muted">
+        <p>Zmodyfikowano: {{ modificationDate | date: 'yyyy-MM-dd HH:mm' }}</p>
+    </div>
+</section>

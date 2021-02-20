@@ -1,0 +1,19 @@
+<section class="card container">
+    <form [formGroup]="blogEntryCreateForm" autocomplete="off" novalidate (ngSubmit)="createBlogEntry(blogEntryCreateForm.value)">
+        <div class="card-body">
+            <h6 class="card-title">
+                <strong>Nowy wpis</strong>
+            </h6>
+            <span class="card-text">
+                <textarea formControlName="content" id="content" class="form-control" maxlength="250" placeholder="Dodaj treść..."></textarea>
+                <small *ngIf="validateControl(blogEntryCreateForm, 'content') && hasError(blogEntryCreateForm, 'content', 'required')"
+                    class="error">Treść jest wymagana.</small>
+                <button class="btn btn-primary" type="submit" role="button">Dodaj</button>
+            </span>
+        </div>
+    </form>
+</section>
+
+<ng-template #messageModal>
+    <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
+  </ng-template>

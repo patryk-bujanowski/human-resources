@@ -23,5 +23,7 @@ namespace HumanResources.Models
         public string City { get; set; }
 
         public ICollection<string> Contacts { get; set; }
+
+        public ICollection<BlogEntry> BlogEntries { get; set; }
     }
 }

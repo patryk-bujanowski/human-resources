@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RepositoryService {
 
-  constructor(private http: HttpClient) { }
+  constructor(protected http: HttpClient) { }
 
   public getAll(url: string): Observable<object> {
     return this.http.get(url, this.getHttpOptions());

@@ -38,7 +38,7 @@ export class RegisterComponent extends FormComponentBase implements OnInit {
     this.authorization.register(user)
       .subscribe(result => {
         if (result !== null) {
-          this.showMessage('Udało się!', 'Użytkownik został zarejestrowany prawidłowo.' + '<br />'
+          this.showMessage('Udało się!', 'Użytkownik został zarejestrowany prawidłowo.'
             + 'Teraz nastąpi przekierowanie do strony logowania.')
             .then(() => this.router.navigate(['/']));
         }
