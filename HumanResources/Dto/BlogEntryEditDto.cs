@@ -5,16 +5,10 @@ using System.Threading.Tasks;
 
 namespace HumanResources.Dto
 {
-    public class BlogEntryDto
+    public class BlogEntryEditDto
     {
         public string Id { get; set; }
 
-        public UserDto Author { get; set; }
-
         public string Content { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public DateTime ModificationDate { get; set; }
     }
 }

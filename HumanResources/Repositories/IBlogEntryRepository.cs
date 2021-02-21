@@ -9,5 +9,9 @@ namespace HumanResources.Repositories
     public interface IBlogEntryRepository : IRepositoryBase<BlogEntry>
     {
         IQueryable<BlogEntry> FindAllWithDetails();
+
+        IQueryable<BlogEntry> FindById(string id);
+
+        bool CheckIfExists(string id);
     }
 }

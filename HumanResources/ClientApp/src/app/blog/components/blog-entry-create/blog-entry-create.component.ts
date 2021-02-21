@@ -27,7 +27,7 @@ export class BlogEntryCreateComponent extends FormComponentBase implements OnIni
   ngOnInit(): void {
     this.blogEntryCreateForm = new FormGroup({
       content: new FormControl('', [Validators.required])
-    })
+    });
   }
 
   public createBlogEntry(blogEntryFormValue): void {

@@ -1,7 +1,10 @@
 import { FormGroup } from '@angular/forms';
 import { ModalService } from '../services/modal.service';
-import { ViewChild, TemplateRef } from '@angular/core';
+import { ViewChild, TemplateRef, Component } from '@angular/core';
 
+@Component({
+  template: ''
+})
 export abstract class FormComponentBase {
 
   public modalTitle: string;  

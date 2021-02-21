@@ -20,8 +20,9 @@ namespace HumanResources.Models
         public BlogEntry()
         {
             Id = Guid.NewGuid().ToString();
-            CreationDate = DateTime.Now;
-            ModificationDate = DateTime.Now;
+            var now = DateTime.Now;
+            CreationDate = now;
+            ModificationDate = now;
         }
     }
 }

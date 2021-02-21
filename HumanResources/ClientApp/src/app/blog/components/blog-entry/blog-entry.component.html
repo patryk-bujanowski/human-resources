@@ -1,11 +1,20 @@
 <section class="card container">
     <div class="card-body">
         <h6 class="card-title">
-            <strong>{{ author.email }}</strong>
+            <strong>{{ blogEntry.author.email }}</strong>
         </h6>
-        <span class="card-text">{{ content }}</span>
-    </div>
-    <div class="card-footer text-muted">
-        <p>Zmodyfikowano: {{ modificationDate | date: 'yyyy-MM-dd HH:mm' }}</p>
+        <textarea class="card-text form-control" [disabled]="!isEditMode" [(ngModel)]="blogEntry.content"></textarea>
+        <button *ngIf="canBeModified" class="btn btn-primary btn-sm" type="button" role="button" (click)="editBlogEntry()"
+            [hidden]="isEditMode">Edytuj</button>
+        <div class="btn-group" role="group" [hidden]="!isEditMode">
+            <button class="btn btn-primary btn-sm" type="submit" role="button" (click)="acceptChanges()">Akceptuj</button>
+            <button class="btn btn-outline-primary btn-sm" type="button" role="button" (click)="cancelChanges()">Anuluj</button>
+        </div>
+        <hr />
+        <p class="text-muted" *ngIf="isModifiedVisible">Zmodyfikowano: <span></span>{{ blogEntry.modificationDate | date: 'yyyy-MM-dd HH:mm' }}</p>
     </div>
 </section>
+
+<ng-template #messageModal>
+    <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
+</ng-template>

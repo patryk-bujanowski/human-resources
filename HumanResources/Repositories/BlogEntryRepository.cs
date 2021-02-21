@@ -21,5 +21,15 @@ namespace HumanResources.Repositories
                 .OrderByDescending(b => b.ModificationDate)
                 .Include(b => b.Author);
         }
+
+        public IQueryable<BlogEntry> FindById(string id)
+        {
+            return FindByCondition(b => b.Id == id);
+        }
+
+        public bool CheckIfExists(string id)
+        {
+            return FindById(id).Any();
+        }
     }
 }

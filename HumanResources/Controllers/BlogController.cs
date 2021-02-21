@@ -73,5 +73,39 @@ namespace HumanResources.Controllers
 
             return Ok(created);
         }
+
+        [HttpPut("entry/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateBlogEntry(string id, BlogEntryEditDto blogEntryDto)
+        {
+            if (id != blogEntryDto.Id)
+            {
+                return BadRequest();
+            }
+
+            var blogEntry = mapper.Map<BlogEntry>(blogEntryDto);
+            blogEntry.ModificationDate = DateTime.Now;
+            repository.BlogEntries.Update(blogEntry);
+
+            try
+            {
+                await repository.SaveAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!repository.BlogEntries.CheckIfExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
     }
 }
