@@ -26,4 +26,8 @@ export class BlogRepositoryService extends RepositoryService {
    public updateBlogEntry(blogEntry: BlogEntryEdit): Observable<object> {
      return this.update(environment.apiUrl + '/api/blog/entry', blogEntry.id, blogEntry);
    }
+
+  public deleteBlogEntry(blogEntryId: string): Observable<object> {
+    return this.delete(environment.apiUrl + '/api/blog/entry', blogEntryId);
+  }
 }

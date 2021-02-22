@@ -4,8 +4,10 @@
             <strong>{{ blogEntry.author.email }}</strong>
         </h6>
         <textarea class="card-text form-control" [disabled]="!isEditMode" [(ngModel)]="blogEntry.content"></textarea>
-        <button *ngIf="canBeModified" class="btn btn-primary btn-sm" type="button" role="button" (click)="editBlogEntry()"
+        <button *ngIf="isOwnedByCurrentUser" class="btn btn-primary btn-sm" type="button" role="button" (click)="editBlogEntry()"
             [hidden]="isEditMode">Edytuj</button>
+        <button *ngIf="isOwnedByCurrentUser" class="btn btn-danger btn-sm" type="button" role="button" (click)="deleteBlogEntry()" 
+            [hidden]="isEditMode">Usuń</button>
         <div class="btn-group" role="group" [hidden]="!isEditMode">
             <button class="btn btn-primary btn-sm" type="submit" role="button" (click)="acceptChanges()">Akceptuj</button>
             <button class="btn btn-outline-primary btn-sm" type="button" role="button" (click)="cancelChanges()">Anuluj</button>
@@ -18,3 +20,8 @@
 <ng-template #messageModal>
     <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
 </ng-template>
+
+<ng-template #warningModal>
+    <app-warning-modal [title]="modalTitle" [message]="modalMessage"></app-warning-modal>
+</ng-template>
+

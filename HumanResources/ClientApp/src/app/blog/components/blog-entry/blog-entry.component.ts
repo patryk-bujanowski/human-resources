@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, TemplateRef } from '@angular/core';
 import { BlogEntry } from '../../models/blog-entry.model';
 import { AuthorizationService } from '../../../shared/authorization/authorization.service';
 import { ModalService } from '../../../shared/services/modal.service';
@@ -27,7 +27,7 @@ export class BlogEntryComponent extends FormComponentBase implements OnInit {
     return this.blogEntry.creationDate !== this.blogEntry.modificationDate;
   }
 
-  public get canBeModified(): boolean {
+  public get isOwnedByCurrentUser(): boolean {
     return this.authorization.currentUser.id === this.blogEntry.author.id;
   }
 
@@ -47,6 +47,21 @@ export class BlogEntryComponent extends FormComponentBase implements OnInit {
   public editBlogEntry(): void {
     this.contentOldValue = this.blogEntry.content;
     this.changeEditMode();
+  }
+
+  public deleteBlogEntry(): void {
+    const message = 'Czy na pewno chcesz usunąć wybrany wpis?';
+    this.showWarning(message)
+      .then(result => {
+        if (result === 'accept') {
+          this.repository.deleteBlogEntry(this.blogEntry.id)
+            .subscribe(result => {
+              this.reloadBlogEntries.emit();
+            }, error => {
+              this.handleError(error.message);
+            });
+        }
+      });
   }
 
   public acceptChanges(): void {

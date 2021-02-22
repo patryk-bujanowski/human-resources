@@ -13,6 +13,9 @@ export abstract class FormComponentBase {
   @ViewChild('messageModal')
   public modalRef: TemplateRef<any>;
 
+  @ViewChild('warningModal')
+  public warningModalRef: TemplateRef<any>;
+
   constructor(protected modal: ModalService) { }
 
   public validateControl(form: FormGroup, controlName: string): boolean {
@@ -36,8 +39,12 @@ export abstract class FormComponentBase {
   }
 
   protected handleError(message: string): Promise<any> {
-    this.modalTitle = 'Błąd!';
+    return this.showMessage('Błąd!', message);
+  }
+
+  protected showWarning(message: string): Promise<any> {
+    this.modalTitle = 'Ostrzeżenie';
     this.modalMessage = message;
-    return this.modal.open(this.modalRef, { backdrop: 'static' });
+    return this.modal.open(this.warningModalRef, { backdrop: 'static' });
   }
 }

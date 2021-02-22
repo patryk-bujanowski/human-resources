@@ -107,5 +107,25 @@ namespace HumanResources.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("entry/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+
+        public async Task<IActionResult> DeleteBlogEntry(string id)
+        {
+            var blogEntry = await repository.BlogEntries.FindById(id).FirstOrDefaultAsync();
+            if (blogEntry == null)
+            {
+                return NotFound();
+            }
+
+            repository.BlogEntries.Delete(blogEntry);
+
+            await repository.SaveAsync();
+
+            return NoContent();
+        }
     }
 }
