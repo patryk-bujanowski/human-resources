@@ -2,6 +2,9 @@
     <div class="card-body">
         <h6 class="card-title">
             <strong>{{ blogEntry.author.email }}</strong>
+            <br />
+            <small class="text-muted" *ngIf="!isModifiedVisible">Dodano: <span></span>{{ blogEntry.creationDate | date: 'yyyy-MM-dd HH:mm' }}</small>
+            <small class="text-muted" *ngIf="isModifiedVisible">Zmodyfikowano: <span></span>{{ blogEntry.modificationDate | date: 'yyyy-MM-dd HH:mm' }}</small>
         </h6>
         <textarea class="card-text form-control" [disabled]="!isEditMode" [(ngModel)]="blogEntry.content"></textarea>
         <button *ngIf="isOwnedByCurrentUser" class="btn btn-primary btn-sm" type="button" role="button" (click)="editBlogEntry()"
@@ -11,9 +14,7 @@
         <div class="btn-group" role="group" [hidden]="!isEditMode">
             <button class="btn btn-primary btn-sm" type="submit" role="button" (click)="acceptChanges()">Akceptuj</button>
             <button class="btn btn-outline-primary btn-sm" type="button" role="button" (click)="cancelChanges()">Anuluj</button>
-        </div>
-        <hr />
-        <p class="text-muted" *ngIf="isModifiedVisible">Zmodyfikowano: <span></span>{{ blogEntry.modificationDate | date: 'yyyy-MM-dd HH:mm' }}</p>
+        </div>        
     </div>
 </section>
 
