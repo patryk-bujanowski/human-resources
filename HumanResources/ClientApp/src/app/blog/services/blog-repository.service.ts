@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { BlogEntryCreate } from '../models/blog-entry-create.model';
 import { environment } from '../../../environments/environment';
 import { BlogEntryEdit } from '../models/blog-entry-edit.model';
+import {BlogEntryVote} from "../models/blog-entry-vote.model";
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,9 @@ export class BlogRepositoryService extends RepositoryService {
 
   public deleteBlogEntry(blogEntryId: string): Observable<object> {
     return this.delete(environment.apiUrl + '/api/blog/entry', blogEntryId);
+  }
+
+  public updateVote(blogEntryVote: BlogEntryVote): Observable<object> {
+    return this.update(environment.apiUrl + '/api/blog/entry/vote', blogEntryVote.blogEntryId, blogEntryVote);
   }
 }

@@ -40,11 +40,11 @@ namespace HumanResources.Extensions
                     e => string.Join(User.ContactsSeparator, e), 
                         e => e.Split(new[] { User.ContactsSeparator }));
                 
+                var valueComparer = new ValueComparer<ICollection<string>>(true);
+                
                 entity.Property(e => e.Contacts)
                     .HasConversion(splitStringConverter);
-
-                var valueComparer = new ValueComparer<ICollection<string>>(true);
-
+                
                 entity.Property(e => e.Contacts)
                     .Metadata
                     .SetValueComparer(valueComparer);
@@ -65,6 +65,26 @@ namespace HumanResources.Extensions
 
                 entity.Property(e => e.ModificationDate)
                     .IsRequired();
+                
+                var splitStringConverter = new ValueConverter<ICollection<string>, string>(
+                    e => string.Join(BlogEntry.VotesSeparator, e), 
+                    e => e.Split(new[] { BlogEntry.VotesSeparator }));
+                
+                var valueComparer = new ValueComparer<ICollection<string>>(true);
+                
+                entity.Property(e => e.Upvotes)
+                    .HasConversion(splitStringConverter);
+                
+                entity.Property(e => e.Upvotes)
+                    .Metadata
+                    .SetValueComparer(valueComparer);
+
+                entity.Property(e => e.Downvotes)
+                    .HasConversion(splitStringConverter);
+                
+                entity.Property(e => e.Downvotes)
+                    .Metadata
+                    .SetValueComparer(valueComparer);
             });
         }
         

@@ -6,4 +6,6 @@ export interface BlogEntry {
     content: string;
     creationDate: string;
     modificationDate: string;
+    upvotes: string[];
+    downvotes: string[];
 }

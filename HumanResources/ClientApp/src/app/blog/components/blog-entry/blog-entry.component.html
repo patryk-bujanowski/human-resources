@@ -9,12 +9,22 @@
         <textarea class="card-text form-control" [disabled]="!isEditMode" [(ngModel)]="blogEntry.content"></textarea>
         <button *ngIf="isOwnedByCurrentUser" class="btn btn-primary btn-sm" type="button" role="button" (click)="editBlogEntry()"
             [hidden]="isEditMode">Edytuj</button>
-        <button *ngIf="isOwnedByCurrentUser" class="btn btn-danger btn-sm" type="button" role="button" (click)="deleteBlogEntry()" 
+        <button *ngIf="isOwnedByCurrentUser" class="btn btn-danger btn-sm" type="button" role="button" (click)="deleteBlogEntry()"
             [hidden]="isEditMode">Usuń</button>
         <div class="btn-group" role="group" [hidden]="!isEditMode">
             <button class="btn btn-primary btn-sm" type="submit" role="button" (click)="acceptChanges()">Akceptuj</button>
             <button class="btn btn-outline-primary btn-sm" type="button" role="button" (click)="cancelChanges()">Anuluj</button>
-        </div>        
+        </div>
+        <div class="btn-group" role="group" [hidden]="!isOwnedByCurrentUser">
+            <button [class]="upvoteClassName" type="button" role="button" [disabled]="!isUpvoteEnabled" (click)="addUpvote()">
+              Jestem za!
+              <span class="badge">{{ this.blogEntry.upvotes.length }}</span>
+            </button>
+            <button [class]="downvoteClassName" type="button" role="button" [disabled]="!isDownvoteEnabled" (click)="addDownvote()">
+              Jestem przeciwko!
+              <span class="badge">{{ this.blogEntry.downvotes.length }}</span>
+            </button>
+        </div>
     </div>
 </section>
 

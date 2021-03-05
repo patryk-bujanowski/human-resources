@@ -1,3 +1,9 @@
 textarea {
     resize: none;
 }
+
+.btn:disabled {
+  background-color: lightgray;
+  border-color: lightgray;
+  color: black;
+}

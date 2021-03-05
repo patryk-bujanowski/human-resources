@@ -16,5 +16,9 @@ namespace HumanResources.Dto
         public DateTime CreationDate { get; set; }
 
         public DateTime ModificationDate { get; set; }
+
+        public ICollection<string> Upvotes { get; set; }
+
+        public ICollection<string> Downvotes { get; set; }
     }
 }

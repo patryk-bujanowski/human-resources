@@ -7,6 +7,8 @@ namespace HumanResources.Models
 {
     public class BlogEntry
     {
+        public const char VotesSeparator = ';';
+        
         public string Id { get; set; }
 
         public User Author { get; set; }
@@ -16,6 +18,10 @@ namespace HumanResources.Models
         public DateTime CreationDate { get; set; }
 
         public DateTime ModificationDate { get; set; }
+
+        public ICollection<string> Upvotes { get; set; }
+
+        public ICollection<string> Downvotes { get; set; }
 
         public BlogEntry()
         {
