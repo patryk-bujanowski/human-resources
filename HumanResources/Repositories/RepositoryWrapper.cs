@@ -12,9 +12,13 @@ namespace HumanResources.Repositories
         private IUserRepository users;
         private IBlogEntryRepository blogEntries;
 
+        private IBlogEntryVoteRepository votes;
+
         public IUserRepository Users => users ??= new UserRepository(context);
 
         public IBlogEntryRepository BlogEntries => blogEntries ??= new BlogEntryRepository(context);
+
+        public IBlogEntryVoteRepository Votes => votes ??= new BlogEntryVoteRepository(context);
 
         public RepositoryWrapper(ApplicationDbContext context)
         {

@@ -11,6 +11,8 @@ namespace HumanResources.Repositories
 
         IBlogEntryRepository BlogEntries { get; }
 
+        IBlogEntryVoteRepository Votes { get; }
+
         void Save();
 
         Task SaveAsync();

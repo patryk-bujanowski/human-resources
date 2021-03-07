@@ -1,4 +1,5 @@
 import { User } from 'src/app/user/models/user.model';
+import { BlogEntryVote } from './blog-entry-vote.model';
 
 export interface BlogEntry {
     id: string;
@@ -6,6 +7,5 @@ export interface BlogEntry {
     content: string;
     creationDate: string;
     modificationDate: string;
-    upvotes: string[];
-    downvotes: string[];
+    votes: BlogEntryVote[];
 }

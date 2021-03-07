@@ -1,16 +1,11 @@
 export enum VoteType {
-  Up,
-  Down
-}
-
-export enum VoteMode {
-  Add,
-  Remove
+  Up = 0,
+  Down = 1
 }
 
 export interface BlogEntryVote {
+  id: string;
   blogEntryId: string;
   userId: string;
   type: VoteType;
-  mode: VoteMode;
 }

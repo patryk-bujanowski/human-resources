@@ -69,9 +69,43 @@ namespace HumanResources.Controllers
             repository.BlogEntries.Create(blogEntry);
             await repository.SaveAsync();
 
-            var created = repository.BlogEntries.FindByCondition(b => b.Id == blogEntry.Id);
+            var created = repository.BlogEntries.FindById(blogEntry.Id);
 
             return Ok(created);
+        }
+
+        [HttpPost("entry/vote")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [Produces(typeof(List<BlogEntryVoteDto>))]
+        public async Task<IActionResult> CreateVote(BlogEntryVoteCreate blogEntryVoteCreate)
+        {
+            var blogEntry = await repository.BlogEntries.FindById(blogEntryVoteCreate.BlogEntryId).FirstOrDefaultAsync();
+            if (blogEntry == null)
+            {
+                return BadRequest();
+            }
+
+            var user = await userManager.FindByIdAsync(blogEntryVoteCreate.UserId);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var vote = new BlogEntryVote
+            {
+                BlogEntryId = blogEntry.Id,
+                UserId = user.Id,
+                Type = blogEntryVoteCreate.Type
+            };
+
+            repository.Votes.Create(vote);
+            await repository.SaveAsync();
+
+            var votes = await repository.Votes.FindByBlogEntryId(blogEntry.Id).ToListAsync();
+
+            return Ok(votes);
         }
 
         [HttpPut("entry/{id}")]
@@ -112,7 +146,6 @@ namespace HumanResources.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-
         public async Task<IActionResult> DeleteBlogEntry(string id)
         {
             var blogEntry = await repository.BlogEntries.FindById(id).FirstOrDefaultAsync();
@@ -127,88 +160,27 @@ namespace HumanResources.Controllers
 
             return NoContent();
         }
-        
-        [HttpPut("entry/vote/{id}")]
+
+        [HttpDelete("entry/vote/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [Produces(typeof(BlogEntryDto))]
-        public async Task<IActionResult> UpdateVote(string id, BlogEntryVoteDto voteDto)
+        public async Task<IActionResult> DeleteVote(string id)
         {
-            if (id != voteDto.BlogEntryId)
+            var vote = await repository.Votes.FindById(id).FirstOrDefaultAsync();
+            if (vote == null)
             {
-                return BadRequest();
-            }
-            
-            var blogEntry = await repository.BlogEntries.FindById(voteDto.BlogEntryId).FirstOrDefaultAsync();
-            if (blogEntry == null)
-            {
-                return BadRequest();
+                return NotFound();
             }
 
-            var user = await userManager.FindByIdAsync(voteDto.UserId);
-            if (user == null)
-            {
-                return BadRequest();
-            }
+            repository.Votes.Delete(vote);
 
-            switch (voteDto.Type)
-            {
-                case VoteType.Up:
-                    blogEntry.Upvotes ??= new List<string>();
-                    switch (voteDto.Mode)
-                    {
-                        case VoteMode.Add:
-                            blogEntry.Upvotes.Add(voteDto.UserId);
-                            break;
-                        case VoteMode.Remove:
-                            var modified = blogEntry.Upvotes.ToList();
-                            modified.Remove(voteDto.UserId);
-                            blogEntry.Upvotes = modified;
-                            break;
-                        default:
-                            return BadRequest();
-                    }
-                    break;
-                case VoteType.Down:
-                    blogEntry.Downvotes ??= new List<string>();
-                    switch (voteDto.Mode)
-                    {
-                        case VoteMode.Add:
-                            var modified = blogEntry.Downvotes.ToList();
-                            modified.Remove(voteDto.UserId);
-                            blogEntry.Downvotes = modified;
-                            break;
-                        case VoteMode.Remove:
-                            blogEntry.Downvotes.ToList().Remove(voteDto.UserId);
-                            break;
-                        default:
-                            return BadRequest();
-                    }
-                    break;
-                default:
-                    return BadRequest();
-            }
+            await repository.SaveAsync();
 
-            repository.BlogEntries.Update(blogEntry);
+            var votes = await repository.Votes.FindByBlogEntryId(vote.BlogEntryId).ToListAsync();
+            var result = mapper.Map<List<BlogEntryVoteDto>>(votes);
 
-            try
-            {
-                await repository.SaveAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!repository.BlogEntries.CheckIfExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok(mapper.Map<BlogEntryDto>(blogEntry));
+            return Ok(result);
         }
     }
 }

@@ -19,7 +19,9 @@ namespace HumanResources.Repositories
         {
             return FindAll()
                 .OrderByDescending(b => b.ModificationDate)
-                .Include(b => b.Author);
+                .Include(b => b.Author)
+                .Include(b => b.Votes)
+                .ThenInclude(v => v.User);
         }
 
         public IQueryable<BlogEntry> FindById(string id)

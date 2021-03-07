@@ -23,6 +23,9 @@ namespace HumanResources
             CreateMap<BlogEntryDto, BlogEntry>();
             CreateMap<BlogEntry, BlogEntryEditDto>();
             CreateMap<BlogEntryEditDto, BlogEntry>();
+
+            CreateMap<BlogEntryVote, BlogEntryVoteDto>();
+            CreateMap<BlogEntryVoteDto, BlogEntryVote>();
         }
     }
 }

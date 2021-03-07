@@ -11,18 +11,21 @@
             [hidden]="isEditMode">Edytuj</button>
         <button *ngIf="isOwnedByCurrentUser" class="btn btn-danger btn-sm" type="button" role="button" (click)="deleteBlogEntry()"
             [hidden]="isEditMode">Usuń</button>
-        <div class="btn-group" role="group" [hidden]="!isEditMode">
+        <div *ngIf="isEditMode" class="btn-group" role="group">
             <button class="btn btn-primary btn-sm" type="submit" role="button" (click)="acceptChanges()">Akceptuj</button>
             <button class="btn btn-outline-primary btn-sm" type="button" role="button" (click)="cancelChanges()">Anuluj</button>
         </div>
-        <div class="btn-group" role="group" [hidden]="!isOwnedByCurrentUser">
-            <button [class]="upvoteClassName" type="button" role="button" [disabled]="!isUpvoteEnabled" (click)="addUpvote()">
+        <div *ngIf="!isOwnedByCurrentUser" class="btn-group" role="group">
+            <button class="btn btn-sm btn-success" type="button" role="button" [disabled]="!isVoteEnabled" (click)="addVote('up')">
               Jestem za!
-              <span class="badge">{{ this.blogEntry.upvotes.length }}</span>
+              <span class="badge">{{ this.upVotesCount }}</span>
             </button>
-            <button [class]="downvoteClassName" type="button" role="button" [disabled]="!isDownvoteEnabled" (click)="addDownvote()">
+            <button class="btn btn-sm btn-danger" type="button" role="button" [disabled]="!isVoteEnabled" (click)="addVote('down')">
               Jestem przeciwko!
-              <span class="badge">{{ this.blogEntry.downvotes.length }}</span>
+              <span class="badge">{{ this.downVotesCount }}</span>
+            </button>
+            <button *ngIf="!isVoteEnabled" class="btn btn-sm btn-outline-primary" type="button" role="button" (click)="deleteVote()">
+              Cofnij
             </button>
         </div>
     </div>

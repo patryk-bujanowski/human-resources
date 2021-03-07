@@ -31,13 +31,7 @@ namespace HumanResources.Data.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Downvotes")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ModificationDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Upvotes")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -45,6 +39,29 @@ namespace HumanResources.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("BlogEntries");
+                });
+
+            modelBuilder.Entity("HumanResources.Models.BlogEntryVote", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BlogEntryId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogEntryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BlogEntryVote");
                 });
 
             modelBuilder.Entity("HumanResources.Models.User", b =>
@@ -274,6 +291,21 @@ namespace HumanResources.Data.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("HumanResources.Models.BlogEntryVote", b =>
+                {
+                    b.HasOne("HumanResources.Models.BlogEntry", "BlogEntry")
+                        .WithMany("Votes")
+                        .HasForeignKey("BlogEntryId");
+
+                    b.HasOne("HumanResources.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("BlogEntry");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -323,6 +355,11 @@ namespace HumanResources.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HumanResources.Models.BlogEntry", b =>
+                {
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("HumanResources.Models.User", b =>

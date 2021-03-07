@@ -19,9 +19,7 @@ namespace HumanResources.Models
 
         public DateTime ModificationDate { get; set; }
 
-        public ICollection<string> Upvotes { get; set; }
-
-        public ICollection<string> Downvotes { get; set; }
+        public ICollection<BlogEntryVote> Votes { get; set; }
 
         public BlogEntry()
         {

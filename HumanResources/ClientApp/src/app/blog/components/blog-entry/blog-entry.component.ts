@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BlogEntry} from '../../models/blog-entry.model';
-import {AuthorizationService} from '../../../shared/authorization/authorization.service';
-import {ModalService} from '../../../shared/services/modal.service';
-import {BlogRepositoryService} from '../../services/blog-repository.service';
-import {FormComponentBase} from '../../../shared/components/form-component-base';
-import {BlogEntryEdit} from '../../models/blog-entry-edit.model';
-import {VoteMode, VoteType} from "../../models/blog-entry-vote.model";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BlogEntry } from '../../models/blog-entry.model';
+import { AuthorizationService } from '../../../shared/authorization/authorization.service';
+import { ModalService } from '../../../shared/services/modal.service';
+import { BlogRepositoryService } from '../../services/blog-repository.service';
+import { FormComponentBase } from '../../../shared/components/form-component-base';
+import { BlogEntryEdit } from '../../models/blog-entry-edit.model';
+import { BlogEntryVoteCreate } from '../../models/blog-entry-vote-create.model';
+import { BlogEntryVote, VoteType } from '../../models/blog-entry-vote.model';
 
 @Component({
   selector: 'app-blog-entry',
@@ -24,40 +25,58 @@ export class BlogEntryComponent extends FormComponentBase implements OnInit {
 
   public isEditMode: boolean = false;
 
+  public get currentUserId(): string {
+    return this.authorization.currentUser.id;
+  }
+
+  public get currentUserVote(): BlogEntryVote {
+    for (let i = 0; i < this.blogEntry.votes.length; i++) {
+      if (this.blogEntry.votes[i].userId === this.currentUserId) {
+        return this.blogEntry.votes[i];
+      }
+    }
+
+    return null;
+  }
+
+  public get upVotesCount(): number {
+    let result = 0;
+
+    this.blogEntry.votes.forEach(vote => {
+      if (vote.type === VoteType.Up) {
+        result++;
+      }
+    });
+
+    return result;
+  }
+
+  public get downVotesCount(): number {
+    let result = 0;
+
+    this.blogEntry.votes.forEach(vote => {
+      if (vote.type === VoteType.Down) {
+        result++;
+      }
+    });
+
+    return result;
+  }
+
   public get isModifiedVisible(): boolean {
     return this.blogEntry.creationDate !== this.blogEntry.modificationDate;
   }
 
   public get isOwnedByCurrentUser(): boolean {
-    return this.authorization.currentUser.id === this.blogEntry.author.id;
+    return this.currentUserId === this.blogEntry.author.id;
   }
 
-  public get isUpvoteEnabled(): boolean {
-    return this.downvoteCurrentUserIndex === -1;
+  public get isVoteEnabled(): boolean {
+    return !this.checkIfUserHasVoted();
   }
 
-  public get isDownvoteEnabled(): boolean {
-    return this.upvoteCurrentUserIndex === -1;
-  }
-
-  public get upvoteCurrentUserIndex(): number {
-    return this.blogEntry.upvotes.indexOf(this.authorization.currentUser.id);
-  }
-
-  public get downvoteCurrentUserIndex(): number {
-    return this.blogEntry.downvotes.indexOf(this.authorization.currentUser.id);
-  }
-
-  public get upvoteClassName(): string {
-    return this.upvoteCurrentUserIndex > -1
-      ? 'btn btn-sm btn-success'
-      : 'btn btn-sm btn-outline-success';
-  }
-
-  public get downvoteClassName(): string {
-    return this.downvoteCurrentUserIndex > -1
-      ? 'btn btn-sm btn-danger'
-      : 'btn btn-sm btn-outline-danger';
+  public checkIfUserHasVoted(): boolean {
+    return this.currentUserVote !== null;
   }
 
   constructor(private authorization: AuthorizationService,
@@ -93,46 +112,43 @@ export class BlogEntryComponent extends FormComponentBase implements OnInit {
       });
   }
 
-  public addUpvote(): void {
-    let mode: VoteMode;
+  public addVote(type: string): void {
+    let voteType: VoteType;
 
-    if (this.upvoteCurrentUserIndex > -1) {
-      mode = VoteMode.Remove;
+    if (type === 'up') {
+      voteType = VoteType.Up
+    } else if (type === 'down') {
+      voteType = VoteType.Down;
     } else {
-      mode = VoteMode.Add;
+      voteType = undefined;
     }
 
-    this.repository.updateVote({
-      blogEntryId: this.blogEntry.id,
-      userId: this.authorization.currentUser.id,
-      type: VoteType.Up,
-      mode: mode
-    }).subscribe(result => {
-      this.blogEntry.upvotes = (result as BlogEntry).upvotes;
-    }, error => {
-      this.handleError(error.message);
-    });
+    if (voteType !== undefined) {
+      const vote: BlogEntryVoteCreate = {
+        blogEntryId: this.blogEntry.id,
+        userId: this.currentUserId,
+        type: voteType
+      };
+
+      this.repository.addVote(vote)
+        .subscribe(result => {
+          this.blogEntry.votes = result as BlogEntryVote[];
+        }, error => {
+          this.handleError(error.message);
+        });
+    }
   }
 
-  public addDownvote(): void {
-    let mode: VoteMode;
-
-    if (this.downvoteCurrentUserIndex > -1) {
-      mode = VoteMode.Remove;
-    } else {
-      mode = VoteMode.Add;
+  public deleteVote(): void {
+    const vote = this.currentUserVote;
+    if (vote != null) {
+      this.repository.deleteVote(vote.id)
+        .subscribe(result => {
+          this.blogEntry.votes = result as BlogEntryVote[];
+        }, error => {
+          this.handleError(error.message);
+        });
     }
-
-    this.repository.updateVote({
-      blogEntryId: this.blogEntry.id,
-      userId: this.authorization.currentUser.id,
-      type: VoteType.Down,
-      mode: mode
-    }).subscribe(result => {
-      this.blogEntry.downvotes = (result as BlogEntry).downvotes;
-    }, error => {
-      this.handleError(error.message);
-    });
   }
 
   public acceptChanges(): void {
