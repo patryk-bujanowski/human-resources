@@ -4,7 +4,6 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { Routes, RouterModule } from '@angular/router';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserAvatarComponent } from './components/user-avatar/user-avatar.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { BlogModule } from '../blog/blog.module';
 
@@ -18,7 +17,6 @@ const routes: Routes = [
   declarations: [
     UserProfileComponent, 
     UserEditComponent, 
-    UserAvatarComponent, 
     UserDashboardComponent
   ],
   imports: [

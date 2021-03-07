@@ -6,7 +6,7 @@ import { User } from 'src/app/user/models/user.model';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
 
@@ -38,10 +38,6 @@ export class UserProfileComponent implements OnInit {
 
   public get user(): User {
     return this.authorization.currentUser;
-  }
-
-  public get avatar(): string {
-    return `data:image/png;base64,${this.user.avatar}`;
   }
 
   constructor(private authorization: AuthorizationService) { }

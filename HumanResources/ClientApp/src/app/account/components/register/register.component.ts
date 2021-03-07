@@ -9,7 +9,7 @@ import { ModalService } from '../../../shared/services/modal.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent extends FormComponentBase implements OnInit {
 

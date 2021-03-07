@@ -16,8 +16,6 @@ namespace HumanResources.Models
 
         public string Sex { get; set; }
 
-        public string Avatar { get; set; }
-
         public DateTime Birthdate { get; set; }
 
         public string City { get; set; }

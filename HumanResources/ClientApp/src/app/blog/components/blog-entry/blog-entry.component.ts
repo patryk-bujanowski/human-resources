@@ -11,7 +11,7 @@ import { BlogEntryVote, VoteType } from '../../models/blog-entry-vote.model';
 @Component({
   selector: 'app-blog-entry',
   templateUrl: './blog-entry.component.html',
-  styleUrls: ['./blog-entry.component.css']
+  styleUrls: ['./blog-entry.component.scss']
 })
 export class BlogEntryComponent extends FormComponentBase implements OnInit {
 

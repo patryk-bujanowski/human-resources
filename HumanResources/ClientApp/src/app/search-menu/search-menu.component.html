@@ -1,9 +1,0 @@
-<form [formGroup]="searchForm" class="form-inline" *ngIf="isAuthenticated | async" (ngSubmit)="search(searchForm.value)">
-  <input formControlName="query" id="query" name="query" role="searchbox" class="form-control" type="search" 
-    placeholder="Szukaj" aria-label="Szukaj">
-  <button class="btn btn-outline-primary" type="submit" [disabled]="searchForm.invalid" >Szukaj</button>
-</form>
-
-<ng-template #messageModal>
-  <app-message-modal [title]="modalTitle" [message]="modalMessage"></app-message-modal>
-</ng-template>

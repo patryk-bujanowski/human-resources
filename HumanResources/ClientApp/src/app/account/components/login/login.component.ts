@@ -9,7 +9,7 @@ import { ModalService } from '../../../shared/services/modal.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends FormComponentBase implements OnInit {
 

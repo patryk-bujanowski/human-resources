@@ -4,7 +4,7 @@ import { ModalService } from '../../services/modal.service';
 @Component({
   selector: 'app-warning-modal',
   templateUrl: './warning-modal.component.html',
-  styleUrls: ['./warning-modal.component.css']
+  styleUrls: ['./warning-modal.component.scss']
 })
 export class WarningModalComponent implements OnInit {
 

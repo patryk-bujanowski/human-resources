@@ -5,7 +5,7 @@ import { BlogRepositoryService } from '../../services/blog-repository.service';
 @Component({
   selector: 'app-blog-entry-list',
   templateUrl: './blog-entry-list.component.html',
-  styleUrls: ['./blog-entry-list.component.css']
+  styleUrls: ['./blog-entry-list.component.scss']
 })
 export class BlogEntryListComponent implements OnInit {
 

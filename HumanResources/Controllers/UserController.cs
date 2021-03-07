@@ -99,28 +99,5 @@ namespace HumanResources.Controllers
 
             return NoContent();
         }
-
-        [HttpPost("avatar")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> UploadAvatar(IFormFile file)
-        {
-            byte[] avatar = null;
-            string userEmail = HttpContext.User.FindFirst(ClaimTypes.Email).Value;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                avatar = memoryStream.ToArray();
-            }
-
-            var user = await repository.Users.FindByEmail(userEmail).FirstOrDefaultAsync();
-            user.Avatar = Convert.ToBase64String(avatar);
-
-            repository.Users.Update(user);
-            await repository.SaveAsync();
-
-            return Ok();
-        }
     }
 }

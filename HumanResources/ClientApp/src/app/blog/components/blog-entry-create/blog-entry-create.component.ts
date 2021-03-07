@@ -9,7 +9,7 @@ import { AuthorizationService } from '../../../shared/authorization/authorizatio
 @Component({
   selector: 'app-blog-entry-create',
   templateUrl: './blog-entry-create.component.html',
-  styleUrls: ['./blog-entry-create.component.css']
+  styleUrls: ['./blog-entry-create.component.scss']
 })
 export class BlogEntryCreateComponent extends FormComponentBase implements OnInit {
 

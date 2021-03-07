@@ -5,7 +5,7 @@ import { AuthorizationService } from '../shared/authorization/authorization.serv
 @Component({
   selector: 'app-account-menu',
   templateUrl: './account-menu.component.html',
-  styleUrls: ['./account-menu.component.css']
+  styleUrls: ['./account-menu.component.scss']
 })
 export class AccountMenuComponent implements OnInit {
 
@@ -18,10 +18,6 @@ export class AccountMenuComponent implements OnInit {
     } else {
       return of(this.authorization.currentUser.email);
     }
-  }
-
-  public get avatar(): string {
-    return `data:image/png;base64,${this.authorization.currentUser.avatar}`;
   }
 
   public get isAuthenticated(): Observable<boolean> {

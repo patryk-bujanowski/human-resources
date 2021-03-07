@@ -1,7 +1,6 @@
 <ul class="navbar-nav" *ngIf="isAuthenticated | async">
     <li class="nav-item">
         <a class="nav-link text-dark" routerLink="/user" title="Twój profil">
-            <img src="{{ avatar }}" alt="Awatar użytkownika" class="avatar-24" />
             {{ userProfile | async }}
         </a>
     </li>
